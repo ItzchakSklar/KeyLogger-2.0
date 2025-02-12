@@ -13,7 +13,9 @@ class Writer(ABC):
     def send(buffer):
         pass
 
-#  מחלקת כותב. מורישה מתודה של כתוב ומתודה של שלח 
+# .מחלקת כתיבה לקובץ. מקבלת נתיב של הקובץ
+# .מתודת כתוב: כותבת הקשות מקלדת למילון ששומר דקות וטקסט 
+# מתודת שלח: שולחת את המילון לקובץ.
 class FileWriter(Writer):
     def __init__(self, file_path):
         self.text_dict = {}
@@ -27,7 +29,6 @@ class FileWriter(Writer):
     def send(self, buffer):
         with open(self.file_path, "a") as file:
             file.write(self.text_dict)
-
         
 class Manager:
     pass
