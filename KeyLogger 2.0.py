@@ -1,10 +1,11 @@
 from abc import ABC,abstractmethod
 
-class KeyLogger(ABC):
+class KeyLogger:
     pass
 
 class Writer(ABC):
     pass
 
-class Manager(ABC):
+class Manager:
     pass
+print("rfdrrd")
