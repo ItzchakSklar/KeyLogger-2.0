@@ -45,7 +45,7 @@ class KeyLogger:
 
 
 
-#  מחלקה מופשטת של כותב. מורישה מתודה של כתוב ומתודה של שלח
+# מחלקה מופשטת של כותב. מורישה מתודה של כתןב
 class IWriter(ABC):
     @abstractmethod
     def write(data: str) -> None:
