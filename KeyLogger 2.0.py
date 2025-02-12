@@ -4,7 +4,9 @@ class KeyLogger:
     pass
 
 class Writer(ABC):
-    pass
+    @abstractmethod
+    def write(buffer) -> dict:
+        pass
 
 class Manager:
     pass
