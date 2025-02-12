@@ -3,8 +3,8 @@ from abc import ABC,abstractmethod
 class KeyLogger(ABC):
     pass
 
-class writer(ABC):
+class Writer(ABC):
     pass
 
-class manager(ABC):
+class Manager(ABC):
     pass
