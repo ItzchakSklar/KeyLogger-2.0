@@ -8,3 +8,4 @@ class Writer(ABC):
 
 class Manager:
     pass
+print("aaa")
