@@ -32,7 +32,9 @@ class XorEncryption(IEncryptor):
         return decryption_string
 
 
+"""
+העבודה עם הקוד בסגנון הזה:
 xor = XorEncryption()
 print(xor.encrypt({"abcd": "efg", 123: "hig"}))
 print(xor.decryption(xor.encrypt({"abcd": "efg", 123: "hig"})))
-
+"""
