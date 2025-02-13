@@ -10,7 +10,7 @@ class XorEncryption(IEncryptor):
     def __init__(self):
         self.key = "Y"
 
-    def encrypt(self, data):
+    def encryption(self, data):
         encrypted_string = ""
         convert_to_string = str(data)
         arr = list(convert_to_string)
@@ -35,6 +35,6 @@ class XorEncryption(IEncryptor):
 """
 העבודה עם הקוד בסגנון הזה:
 xor = XorEncryption()
-print(xor.encrypt({"abcd": "efg", 123: "hig"}))
+print(xor.encryption({"abcd": "efg", 123: "hig"}))
 print(xor.decryption(xor.encrypt({"abcd": "efg", 123: "hig"})))
 """
