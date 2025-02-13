@@ -1,42 +1,45 @@
 from abc import ABC,abstractmethod
 from datetime import datetime
 
-# מחלקה מופשטת של כותב. מורישה מתודה של כתןב.
+
 class IWriter(ABC):
+    """Abstract class for Interface Writer with write method"""
     @abstractmethod
     def write(self, data: str) -> None:
         pass
 
-# מחלקת כתיבה למילון
 class DictWriter(IWriter):
+    """Dictionary writer class with write method
+    which get data as string and write it to a dictionary,
+    minutes as keys and text as values"""
 
     def __init__(self):
         self.dct = {}
 
     def get_dict(self) -> dict:
+        """reset the object dictionary and return the last ductionary"""
         current_dict = self.dct.copy()
         self.dct = {}
         return current_dict
-    
+
     @staticmethod
     def cur_min():
+        """return the current minute"""
         return datetime.now().strftime("%d/%m/%Y, %H:%M")
 
-    def write(self, key: str) -> None:
-        if self.cur_min not in self.dct:
-            self.dct[self.cur_min] = key
+    def write(self, data: str) -> None:
+        if self.cur_min() not in self.dct:
+            self.dct[self.cur_min()] = data
         else:
-            self.dct[self.cur_min] += key
-        
-# מחלקת כתיבה לקובץ טקסט
+            self.dct[self.cur_min()] += data
+
+
 class FileWriter(IWriter):
-
-    def __init__(self, path = "C:\Users\User\OneDrive\GitProjects\KeyloggerFile"):        
-        self.file_path = path
-
-    def change_file_path(self, path: str) -> None:
+    """File writer class with write method
+    which get data as string and write it to a text file."""
+    def __init__(self, path :str = "C:/Users/User/OneDrive/GitProjects/KeyloggerFile/keylogger.txt"):
         self.file_path = path
 
     def write(self, data: str) -> None:
         with open(self.file_path, "a") as file:
-            file.write(data)
+            file.write(data+"\n")
