@@ -3,7 +3,6 @@ from pynput.keyboard import Key,Listener
 import sys
 
 
-
 class IKeyLogger(ABC):
     @abstractmethod
     def start_logging(self) -> None:
