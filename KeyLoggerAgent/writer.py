@@ -17,7 +17,7 @@ class DictWriter(IWriter):
         self.dct = {}
 
     def get_dict(self) -> dict:
-        """reset the object dictionary and return the last ductionary"""
+        """reset the object dictionary and return the last dictionary"""
         current_dict = self.dct.copy()
         self.dct = {}
         return current_dict
