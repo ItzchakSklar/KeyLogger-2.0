@@ -78,7 +78,5 @@ class KeyLogger(IKeyLogger):
         return c
 
 
-KeyLogger().start_logging()
-KeyLogger().stop_logging()
 
 
