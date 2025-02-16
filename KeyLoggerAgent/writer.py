@@ -22,17 +22,17 @@ class DictWriter(IWriter):
         self.dct = {}
         return current_dict
 
-    @staticmethod
-    def cur_min():
-        """return the current minute"""
+    def __cur_min():
+        """return the current minute as a string"""
         return datetime.now().strftime("%d/%m/%Y, %H:%M")
 
     def write(self, data: list) -> None:
+        """Write the given list of characters to the dictionary."""
         data_str = "".join(data)
-        if self.cur_min() not in self.dct:
-            self.dct[self.cur_min()] = data_str
+        if self.__cur_min() not in self.dct:
+            self.dct[self.__cur_min()] = data_str
         else:
-            self.dct[self.cur_min()] += data_str
+            self.dct[self.__cur_min()] += data_str
 
 
 class FileWriter(IWriter):
