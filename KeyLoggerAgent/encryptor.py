@@ -1,29 +1,36 @@
 from abc import ABC, abstractmethod
 
 class IEncryptor(ABC):
-
+    """Abstract class for Interface Encryptor with encryption method."""
     @abstractmethod
-    def encryption(self, data: dict) -> str:
+    def encrypt(self, data: dict) -> str:
         pass
 
     # def decryption(self, data):
     #     pass
 
-class XorEncryption(IEncryptor):
+class XorEncryptor(IEncryptor):
+    """XOR Encryptor class with methods to encrypt data using XOR encryption."""
+
     def __init__(self):
         self.key = "Y"
 
-    def encryption(self, data):
+    def encrypt(self, data):
+        """Encrypt the given data using XOR encryption."""
+
         encrypted_string = ""
         convert_to_string = str(data)
         arr = list(convert_to_string)
+
         for i in arr:
             char = ord(i)
             char = char ^ ord(self.key)
             encrypted_char = chr(char)
             encrypted_string += str(encrypted_char)
+
         return encrypted_string
-    # def decryption(self, data):
+    
+    # def decrypt(self, data):
     #     decryption_string = ""
     #     password_number = input("Enter password: ")
     #     arr = list(data)
@@ -35,9 +42,11 @@ class XorEncryption(IEncryptor):
     #     return decryption_string
 
 
+
 """
-העבודה עם הקוד בסגנון הזה:
-xor = XorEncryption()
-print(xor.encryption({"abcd": "efg", 123: "hig"}))
-print(xor.decryption(xor.encrypt({"abcd": "efg", 123: "hig"})))
+# Example usage:
+xor = XorEncryptor()
+print(xor.encrypt({"abcd": "efg", 123: "hig"}))
+# print(xor.decrypt(xor.encrypt({"abcd": "efg", 123: "hig"})))
 """
+
