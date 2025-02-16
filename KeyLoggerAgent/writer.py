@@ -5,12 +5,12 @@ from datetime import datetime
 class IWriter(ABC):
     """Abstract class for Interface Writer with write method"""
     @abstractmethod
-    def write(self, data: str) -> None:
+    def write(self, data) -> None:
         pass
 
 class DictWriter(IWriter):
     """Dictionary writer class with write method
-    which get data as string and write it to a dictionary,
+    which get data as list and write it to a dictionary,
     minutes as keys and text as values"""
 
     def __init__(self):
@@ -27,11 +27,12 @@ class DictWriter(IWriter):
         """return the current minute"""
         return datetime.now().strftime("%d/%m/%Y, %H:%M")
 
-    def write(self, data: str) -> None:
+    def write(self, data: list) -> None:
+        data_str = "".join(data)
         if self.cur_min() not in self.dct:
-            self.dct[self.cur_min()] = data
+            self.dct[self.cur_min()] = data_str
         else:
-            self.dct[self.cur_min()] += data
+            self.dct[self.cur_min()] += data_str
 
 
 class FileWriter(IWriter):
