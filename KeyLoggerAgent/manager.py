@@ -25,7 +25,7 @@ class Manager:
                 dict_encrypt = XorEncryption().encryption(get_dict)
                 # שליחת הדיקט לקובץ
                 FileWriter().write(dict_encrypt)
-                if count == 15:
+                if count >= 15:
                     DictWriter()
                     count = 0
             # המתן דקה
