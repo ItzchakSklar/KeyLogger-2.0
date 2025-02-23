@@ -17,14 +17,13 @@ class XorEncryptor(IEncryptor):
 
     def encrypt(self, data):
         """Encrypt the given data using XOR encryption."""
-
         encrypted_string = ""
         convert_to_string = str(data)
         arr = list(convert_to_string)
 
         for i in arr:
             char = ord(i)
-            char = char ^ ord(self.key)
+            char = char ^ (ord(self.key) + 3)
             encrypted_char = chr(char)
             encrypted_string += str(encrypted_char)
 
@@ -36,7 +35,7 @@ class XorEncryptor(IEncryptor):
     #     arr = list(data)
     #     for i in arr:
     #         char = ord(i)
-    #         char = char ^ ord(password_number)
+    #         char = char ^ (ord(password_number) - 3)
     #         decryption_char = chr(char)
     #         decryption_string += str(decryption_char)
     #     return decryption_string
