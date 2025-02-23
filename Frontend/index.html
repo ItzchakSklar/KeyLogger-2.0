@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KeyLogger</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>KeyLogger</h1>
+            <div class="actions">
+                <div class="search-container">
+                    <input type="text" id="search-input" placeholder="machine search...">
+                    <i class="fas fa-search"></i>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <section id="computers-list" class="card">
+                <h2>Machines list</h2>
+                <ul id="computers-container"></ul>
+            </section>
+
+            <section id="computer-details" class="card hidden">
+                <div class="card-header">
+                    <h2>machine's data</h2>
+                    <button id="close-details" class="btn secondary">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <div class="computer-info">
+                    <div class="info-row">
+                        <span class="label">name:</span>
+                        <span id="detail-name" class="value"></span>
+                        <button id="edit-name-btn" class="btn small">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">data:</span>
+                        <span id="detail-name" class="value"></span>
+                        <button id="edit-name-btn" class="btn small">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Modal: Edit Name -->
+        <div id="edit-name-modal" class="modal-overlay hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>עדכון כתובת</h3>
+                    <button class="modal-close"><i class="fas fa-times"></i></button>
+                </div>
+                <form id="edit-name-form">
+                    <div class="form-group">
+                        <label for="updated-name">כתובת חדשה</label>
+                        <input type="text" id="updated-name" required>
+                    </div>
+                    <div class="modal-actions">
+                        <button type="button" class="btn secondary modal-cancel">ביטול</button>
+                        <button type="submit" class="btn primary">עדכון</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
