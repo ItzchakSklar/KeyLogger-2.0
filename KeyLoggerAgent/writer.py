@@ -1,6 +1,7 @@
 from abc import ABC,abstractmethod
 from datetime import datetime
 from pathlib import Path
+from requests import post
 
 class IWriter(ABC):
     """Abstract class for Interface Writer with write method"""
@@ -48,3 +49,13 @@ class FileWriter(IWriter):
     def write(self, data: str) -> None:
         with open(self.file_path, "a") as file:
             file.write(data+"\n")
+
+
+class NetworkWriter(IWriter):
+    """Network Writer class with write method
+    which get data as string and write it to a server"""
+    def __init__(self, data: str):
+       self.data = data
+
+    def write(self) -> None:
+        post(url="#", data=self.data)
