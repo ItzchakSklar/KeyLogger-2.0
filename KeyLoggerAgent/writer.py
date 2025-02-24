@@ -56,11 +56,5 @@ class FileWriter(IWriter):
 class NetworkWriter(IWriter):
     """Network Writer class with write method
     which get data as string and write it to a server"""
-    @staticmethod
-    def _computer_name() -> str:
-        """return the computer name as a string"""
-        return gethostname()
-
     def write(self, data: str) -> None:
-        """Write the given text to the server"""
-        post(url=f"http://127.0.0.1:5000/api/computers/{self._computer_name()}", data=data)
+        post(url=f"http://127.0.0.1:5000/api/computers/{gethostname()}", data=data)
