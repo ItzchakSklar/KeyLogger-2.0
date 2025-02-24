@@ -6,6 +6,7 @@ const computersContainer = document.getElementById('computers-container');
 const computerDetailsSection = document.getElementById('computer-details');
 const closeDetailsBtn = document.getElementById('close-details');
 const detailName = document.getElementById('detail-name');
+const detailData = document.getElementById('detail-data');
 const gradesList = document.getElementById('grades-list');
 const gradeAverageValue = document.getElementById('grade-average-value');
 const searchInput = document.getElementById('search-input');
@@ -18,15 +19,15 @@ const addGradeBtn = document.getElementById('add-grade-btn');
 const addGradeModal = document.getElementById('add-grade-modal');
 const addGradeForm = document.getElementById('add-grade-form');
 const editNameBtn = document.getElementById('edit-name-btn');
-const editNameModal = document.getElementById('edit-Name-modal');
-const editNameForm = document.getElementById('edit-Name-form');
-const updatedNameInput = document.getElementById('updated-Name');
+const editNameModal = document.getElementById('edit-name-modal');
+const editNameForm = document.getElementById('edit-name-form');
+const updatedNameInput = document.getElementById('updated-name');
 
 // Close buttons
 const modalCloseButtons = document.querySelectorAll('.modal-close, .modal-cancel');
 
 // Current computer
-let currentComputerId = null;
+let currentComputerData = null;
 
 // Initialize the application
 document.addEventListener('DOMContentLoaded', () => {
@@ -43,7 +44,6 @@ function setupEventListeners() {
 
     // Modal open buttons
     addComputerBtn.addEventListener('click', () => openModal(addComputerModal));
-    addGradeBtn.addEventListener('click', () => openModal(addGradeModal));
     editNameBtn.addEventListener('click', () => {
         updatedNameInput.value = detailName.textContent;
         openModal(editNameModal);
@@ -58,8 +58,7 @@ function setupEventListeners() {
     });
 
     // Form submissions
-    addComputerForm.addEventListener('submit', handleAddcomputer);
-    addGradeForm.addEventListener('submit', handleAddGrade);
+    addComputerForm.addEventListener('submit', handleAddComputer);
     editNameForm.addEventListener('submit', handleUpdateName);
 
     // Search functionality
@@ -73,7 +72,7 @@ async function fetchComputers() {
         const computers = await response.json();
         renderComputersList(computers);
     } catch (error) {
-        showError('שגיאה בטעינת רשימת התלמידים');
+        showError('שגיאה בטעינת רשימת המחשבים');
         console.error('Error fetching computers:', error);
     }
 }
@@ -82,15 +81,16 @@ async function fetchComputerDetails(computerData) {
     try {
         const response = await fetch(`${API_URL}/computers/${computerData}`);
         const computer = await response.json();
+        console.log(response);
         
         if (response.ok) {
             renderComputerDetails(computer);
             currentComputerData = computerData;
         } else {
-            showError(computer.error || 'שגיאה בטעינת פרטי התלמיד');
+            showError(computer.error || 'שגיאה בטעינת פרטי המחשב');
         }
     } catch (error) {
-        showError('שגיאה בטעינת פרטי התלמיד');
+        showError('שגיאה בטעינת פרטי המחשב');
         console.error('Error fetching computer details:', error);
     }
 }
@@ -110,7 +110,7 @@ async function addComputer(computerData) {
         if (response.ok) {
             return { success: true, data: result };
         } else {
-            return { success: false, error: result.error || 'שגיאה בהוספת תלמיד חדש' };
+            return { success: false, error: result.error || 'שגיאה בהוספת מחשב חדש' };
         }
     } catch (error) {
         console.error('Error adding computer:', error);
@@ -169,7 +169,7 @@ async function handleUpdateName(event) {
     const newName = updatedNameInput.value;
     
     if (!currentComputerData) {
-        showError('לא נבחר תלמיד');
+        showError('לא נבחר מחשב');
         return;
     }
     
@@ -201,7 +201,7 @@ function renderComputersList(computers) {
             <div>
                 <span class="computer-name">${computer.name.length > maxLength ? computer.name.slice(0, maxLength) + "..." : computer.name}</span>
             </div>
-            <span class="computer-data">${computer.data.length > maxLength ? computer.data.slice(0, maxLength) + "..." : computer.data}</span>
+            <!-- <span class="computer-data">${computer.data.length > maxLength ? computer.data.slice(0, maxLength) + "..." : computer.data}</span> -->
         `;
         
         computerElement.addEventListener('click', () => handleComputerClick(computer.data));
@@ -211,9 +211,7 @@ function renderComputersList(computers) {
 
 function renderComputerDetails(computer) {
     detailName.textContent = computer.name;
-    
-    // Render grades
-    gradesList.innerHTML = '';
+    detailData.textContent = computer.data;
 }
 
 // Helper Functions
