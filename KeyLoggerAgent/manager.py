@@ -17,9 +17,10 @@ class Manager:
         writing data to a dictionary and file, and encrypting it periodically."""
         minute = 60
         send_encryption = 5
-        reset = 3
+        reset = 15
         dw = DictWriter()
         fw = FileWriter()
+        nw = NetworkWriter()
         count = 0
         while True:
             # Wait for a minute
@@ -44,7 +45,7 @@ class Manager:
                     print(str(get_dict))
                     fw.write(dict_encrypt)
                 if count >= reset:
-                    # DictWriter()
+                    nw.write("aaa")
                     count = 0
 
 
