@@ -7,8 +7,8 @@ CORS(app)  # Enable CORS for all routes
 # Initial computers data
 computers = [
     {
-        "name": "computer 1",
-        "data": "אני איראני 1"
+        "name": "computer 1 ljdfs lbjdf ls lsd sdl",
+        "data": "אני איראני 1 djfsk jfidslfb jdls fhj  "
     },
     {
         "name": "computer 2",
@@ -21,7 +21,7 @@ computers = [
 ]
 
 
-# Get all computers (name and ID only)
+# Get all computers (name and data only)
 @app.route('/api/computers', methods=['GET'])
 def get_computers():
     simplified_computers = [{"name": computer["name"], "data": computer["data"]} for computer in computers]
@@ -29,9 +29,9 @@ def get_computers():
 
 
 # Get specific computer details
-@app.route('/api/computers/<computer_id>', methods=['GET'])
-def get_computer(computer_id):
-    computer = next((s for s in computers if s["name"] == computer_id), None)
+@app.route('/api/computers/<computer_name>', methods=['GET'])
+def get_computer(computer_name):
+    computer = next((s for s in computers if s["name"] == computer_name), None)
     if computer:
         return jsonify(computer)
     else:
@@ -43,7 +43,7 @@ def get_computer(computer_id):
 def add_computer():
     new_computer = request.json
 
-    # Check if computer with this ID already exists
+    # Check if computer with this name already exists
     if any(s["name"] == new_computer["name"] for s in computers):
         return jsonify({"error": "מחשב עם שם זה כבר קיים במערכת"}), 400
 
@@ -66,21 +66,6 @@ def update_computer(computer_name):
         computer["name"] = update_data["name"]
 
     return jsonify(computer)
-
-
-# Add grade to computer
-@app.route('/api/computers/<computer_id>/grades', methods=['POST'])
-def add_grade(computer_name):
-    grade_data = request.json
-    computer = next((s for s in computers if s["name"] == computer_name), None)
-
-    if not computer:
-        return jsonify({"error": "מחשב לא נמצא"}), 404
-
-    # Add new grade
-    computer["grades"].append(grade_data["grade"])
-    return jsonify(computer)
-
 
 if __name__ == '__main__':
     app.run(debug=True)

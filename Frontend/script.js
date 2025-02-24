@@ -11,9 +11,9 @@ const gradeAverageValue = document.getElementById('grade-average-value');
 const searchInput = document.getElementById('search-input');
 
 // Modal Elements
-const addcomputerBtn = document.getElementById('add-computer-btn');
-const addcomputerModal = document.getElementById('add-computer-modal');
-const addcomputerForm = document.getElementById('add-computer-form');
+const addComputerBtn = document.getElementById('add-computer-btn');
+const addComputerModal = document.getElementById('add-computer-modal');
+const addComputerForm = document.getElementById('add-computer-form');
 const addGradeBtn = document.getElementById('add-grade-btn');
 const addGradeModal = document.getElementById('add-grade-modal');
 const addGradeForm = document.getElementById('add-grade-form');
@@ -26,11 +26,11 @@ const updatedNameInput = document.getElementById('updated-Name');
 const modalCloseButtons = document.querySelectorAll('.modal-close, .modal-cancel');
 
 // Current computer
-let currentcomputerId = null;
+let currentComputerId = null;
 
 // Initialize the application
 document.addEventListener('DOMContentLoaded', () => {
-    fetchcomputers();
+    fetchComputers();
     setupEventListeners();
 });
 
@@ -42,7 +42,7 @@ function setupEventListeners() {
     });
 
     // Modal open buttons
-    addcomputerBtn.addEventListener('click', () => openModal(addcomputerModal));
+    addComputerBtn.addEventListener('click', () => openModal(addComputerModal));
     addGradeBtn.addEventListener('click', () => openModal(addGradeModal));
     editNameBtn.addEventListener('click', () => {
         updatedNameInput.value = detailName.textContent;
@@ -58,7 +58,7 @@ function setupEventListeners() {
     });
 
     // Form submissions
-    addcomputerForm.addEventListener('submit', handleAddcomputer);
+    addComputerForm.addEventListener('submit', handleAddcomputer);
     addGradeForm.addEventListener('submit', handleAddGrade);
     editNameForm.addEventListener('submit', handleUpdateName);
 
@@ -67,25 +67,25 @@ function setupEventListeners() {
 }
 
 // API Functions
-async function fetchcomputers() {
+async function fetchComputers() {
     try {
         const response = await fetch(`${API_URL}/computers`);
         const computers = await response.json();
-        rendercomputersList(computers);
+        renderComputersList(computers);
     } catch (error) {
         showError('שגיאה בטעינת רשימת התלמידים');
         console.error('Error fetching computers:', error);
     }
 }
 
-async function fetchcomputerDetails(computerId) {
+async function fetchComputerDetails(computerData) {
     try {
-        const response = await fetch(`${API_URL}/computers/${computerId}`);
+        const response = await fetch(`${API_URL}/computers/${computerData}`);
         const computer = await response.json();
         
         if (response.ok) {
-            rendercomputerDetails(computer);
-            currentcomputerId = computerId;
+            renderComputerDetails(computer);
+            currentComputerData = computerData;
         } else {
             showError(computer.error || 'שגיאה בטעינת פרטי התלמיד');
         }
@@ -95,7 +95,7 @@ async function fetchcomputerDetails(computerId) {
     }
 }
 
-async function addcomputer(computerData) {
+async function addComputer(computerData) {
     try {
         const response = await fetch(`${API_URL}/computers`, {
             method: 'POST',
@@ -118,7 +118,7 @@ async function addcomputer(computerData) {
     }
 }
 
-async function updatecomputerName(detailName, newName) {
+async function updateComputerName(detailName, newName) {
     try {
         const response = await fetch(`${API_URL}/computers/${detailName}`, {
             method: 'PUT',
@@ -142,8 +142,8 @@ async function updatecomputerName(detailName, newName) {
 }
 
 // Event Handlers
-function handlecomputerClick(computerId) {
-    fetchcomputerDetails(computerId);
+function handleComputerClick(computerData) {
+    fetchComputerDetails(computerData);
     computerDetailsSection.classList.remove('hidden');
 }
 
@@ -153,9 +153,9 @@ function handleSearch(event) {
     
     computerItems.forEach(item => {
         const name = item.querySelector('.computer-name').textContent.toLowerCase();
-        const id = item.querySelector('.computer-id').textContent;
+        const data = item.querySelector('.computer-data').textContent;
         
-        if (name.includes(searchTerm) || id.includes(searchTerm)) {
+        if (name.includes(searchTerm) || data.includes(searchTerm)) {
             item.style.display = '';
         } else {
             item.style.display = 'none';
@@ -168,24 +168,24 @@ async function handleUpdateName(event) {
     
     const newName = updatedNameInput.value;
     
-    if (!currentcomputerId) {
+    if (!currentComputerData) {
         showError('לא נבחר תלמיד');
         return;
     }
     
-    const result = await updatecomputerName(currentcomputerId, newName);
+    const result = await updateComputerName(currentComputerData, newName);
     
     if (result.success) {
         closeModal(editNameModal);
         showSuccess('השם עודכנה בהצלחה');
-        rendercomputerDetails(result.data);
+        renderComputerDetails(result.data);
     } else {
         showError(result.error);
     }
 }
 
 // UI Rendering Functions
-function rendercomputersList(computers) {
+function renderComputersList(computers) {
     computersContainer.innerHTML = '';
     
     if (computers.length === 0) {
@@ -196,19 +196,20 @@ function rendercomputersList(computers) {
     computers.forEach(computer => {
         const computerElement = document.createElement('li');
         computerElement.className = 'computer-item';
+        const maxLength = 30;
         computerElement.innerHTML = `
             <div>
-                <span class="computer-name">${computer.name}</span>
+                <span class="computer-name">${computer.name.length > maxLength ? computer.name.slice(0, maxLength) + "..." : computer.name}</span>
             </div>
-            <span class="computer-id">${computer.id}</span>
+            <span class="computer-data">${computer.data.length > maxLength ? computer.data.slice(0, maxLength) + "..." : computer.data}</span>
         `;
         
-        computerElement.addEventListener('click', () => handlecomputerClick(computer.id));
+        computerElement.addEventListener('click', () => handleComputerClick(computer.data));
         computersContainer.appendChild(computerElement);
     });
 }
 
-function rendercomputerDetails(computer) {
+function renderComputerDetails(computer) {
     detailName.textContent = computer.name;
     
     // Render grades
