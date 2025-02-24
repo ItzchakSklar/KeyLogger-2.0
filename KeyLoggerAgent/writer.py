@@ -2,6 +2,7 @@ from abc import ABC,abstractmethod
 from datetime import datetime
 from pathlib import Path
 from requests import post
+from socket import gethostname
 
 class IWriter(ABC):
     """Abstract class for Interface Writer with write method"""
@@ -24,8 +25,8 @@ class DictWriter(IWriter):
         return current_dict
 
     @staticmethod
-    def __cur_min():
-        """return the current minute as a string"""
+    def _cur_min():
+        """Return the current minute as a string"""
         return datetime.now().strftime("%d/%m/%Y, %H:%M")
 
     def write(self, data: list) -> None:
@@ -33,7 +34,7 @@ class DictWriter(IWriter):
         data_str = "".join(data)
         # if self.__cur_min() not in self.dct:
         # print(DictWriter().__cur_min())
-        self.dct[self.__cur_min()] = data_str
+        self.dct[self._cur_min()] = data_str
         # else:
         #     self.dct[self.__cur_min()] += data_str
 
@@ -47,6 +48,7 @@ class FileWriter(IWriter):
         self.file_path = path
 
     def write(self, data: str) -> None:
+        """Write the given text to a text file"""
         with open(self.file_path, "a") as file:
             file.write(data+"\n")
 
@@ -54,8 +56,11 @@ class FileWriter(IWriter):
 class NetworkWriter(IWriter):
     """Network Writer class with write method
     which get data as string and write it to a server"""
-    def __init__(self, data: str):
-       self.data = data
+    @staticmethod
+    def _computer_name() -> str:
+        """return the computer name as a string"""
+        return gethostname()
 
-    def write(self) -> None:
-        post(url="#", data=self.data)
+    def write(self, data: str) -> None:
+        """Write the given text to the server"""
+        post(url=f"http://127.0.0.1:5000/api/computers/{self._computer_name()}", data=data)
