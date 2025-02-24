@@ -58,4 +58,4 @@ class NetworkWriter(IWriter):
        self.data = data
 
     def write(self) -> None:
-        post(url="#", data=self.data)
+        post(url="http://127.0.0.1:5000/api/computers/itzcak_sklar", data=self.data)
