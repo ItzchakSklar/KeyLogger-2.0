@@ -2,7 +2,6 @@
 :root {
     --primary-color: #3f51b5;
     --primary-light: #e8eaf6;
-    --primary-dark: #303f9f;
     --accent-color: #ff4081;
     --text-primary: #212121;
     --text-secondary: #757575;
@@ -27,7 +26,11 @@
 
 html, body {
     height: 100%;
-    background-color: var(--background);
+    background: linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.5)), 
+    url("https://www.elementshls.com/wp-content/uploads/2021/10/shutterstock_1986979817-1.jpg");
+    background-size: 100% 100%;
+    background-repeat: repeat-y;
+    background-attachment:scroll;
     color: var(--text-primary);
     font-size: 16px;
     line-height: 1.5;
@@ -35,7 +38,8 @@ html, body {
 
 /* Container */
 .container {
-    max-width: 1200px;
+    max-width: 2000px;
+    width: 80vh;
     margin: 0 auto;
     padding: 2rem;
 }
@@ -48,7 +52,7 @@ header {
 header h1 {
     font-size: 2rem;
     font-weight: 500;
-    color: var(--primary-dark);
+    color: var(--background);
     margin-bottom: 1.5rem;
 }
 
@@ -235,7 +239,7 @@ main {
 }
 
 /* Grades Section */
-.grades-section h3 {
+/* .grades-section h3 {
     font-size: 1.25rem;
     color: var(--text-primary);
     margin-bottom: 1rem;
@@ -281,7 +285,7 @@ main {
     background-color: var(--primary-color);
     color: white;
     border-radius: var(--border-radius);
-}
+} */
 
 /* Modal Styles */
 .modal-overlay {

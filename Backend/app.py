@@ -8,7 +8,7 @@ CORS(app)  # Enable CORS for all routes
 computers = [
     {
         "name": "computer 1 ljdfs lbjdf ls lsd sdl",
-        "data": "אני איראני 1 djfsk jfidslfb jdls fhj  "
+        "data": "ds hks ksd ksd 1 djfsk jfidslfb jdls fhj"
     },
     {
         "name": "computer 2",
