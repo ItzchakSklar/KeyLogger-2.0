@@ -7,17 +7,12 @@ const computerDetailsSection = document.getElementById('computer-details');
 const closeDetailsBtn = document.getElementById('close-details');
 const detailName = document.getElementById('detail-name');
 const detailData = document.getElementById('detail-data');
-const gradesList = document.getElementById('grades-list');
-const gradeAverageValue = document.getElementById('grade-average-value');
 const searchInput = document.getElementById('search-input');
 
 // Modal Elements
 const addComputerBtn = document.getElementById('add-computer-btn');
 const addComputerModal = document.getElementById('add-computer-modal');
 const addComputerForm = document.getElementById('add-computer-form');
-const addGradeBtn = document.getElementById('add-grade-btn');
-const addGradeModal = document.getElementById('add-grade-modal');
-const addGradeForm = document.getElementById('add-grade-form');
 const editNameBtn = document.getElementById('edit-name-btn');
 const editNameModal = document.getElementById('edit-name-modal');
 const editNameForm = document.getElementById('edit-name-form');
@@ -27,7 +22,7 @@ const updatedNameInput = document.getElementById('updated-name');
 const modalCloseButtons = document.querySelectorAll('.modal-close, .modal-cancel');
 
 // Current computer
-let currentComputerData = null;
+let currentComputerName = null;
 
 // Initialize the application
 document.addEventListener('DOMContentLoaded', () => {
@@ -77,15 +72,14 @@ async function fetchComputers() {
     }
 }
 
-async function fetchComputerDetails(computerData) {
+async function fetchComputerDetails(computerName) {
     try {
-        const response = await fetch(`${API_URL}/computers/${computerData}`);
+        const response = await fetch(`${API_URL}/computers/${computerName}`);
         const computer = await response.json();
-        console.log(response);
         
         if (response.ok) {
             renderComputerDetails(computer);
-            currentComputerData = computerData;
+            currentComputerName = computerName;
         } else {
             showError(computer.error || 'שגיאה בטעינת פרטי המחשב');
         }
@@ -118,9 +112,9 @@ async function addComputer(computerData) {
     }
 }
 
-async function updateComputerName(detailName, newName) {
+async function updateComputerName(computerName, newName) {
     try {
-        const response = await fetch(`${API_URL}/computers/${detailName}`, {
+        const response = await fetch(`${API_URL}/computers/${computerName}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -142,8 +136,8 @@ async function updateComputerName(detailName, newName) {
 }
 
 // Event Handlers
-function handleComputerClick(computerData) {
-    fetchComputerDetails(computerData);
+function handleComputerClick(computerName) {
+    fetchComputerDetails(computerName);
     computerDetailsSection.classList.remove('hidden');
 }
 
@@ -168,12 +162,12 @@ async function handleUpdateName(event) {
     
     const newName = updatedNameInput.value;
     
-    if (!currentComputerData) {
+    if (!currentComputerName) {
         showError('לא נבחר מחשב');
         return;
     }
     
-    const result = await updateComputerName(currentComputerData, newName);
+    const result = await updateComputerName(currentComputerName, newName);
     
     if (result.success) {
         closeModal(editNameModal);
@@ -204,7 +198,7 @@ function renderComputersList(computers) {
             <!-- <span class="computer-data">${computer.data.length > maxLength ? computer.data.slice(0, maxLength) + "..." : computer.data}</span> -->
         `;
         
-        computerElement.addEventListener('click', () => handleComputerClick(computer.data));
+        computerElement.addEventListener('click', () => handleComputerClick(computer.name));
         computersContainer.appendChild(computerElement);
     });
 }
