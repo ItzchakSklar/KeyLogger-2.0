@@ -27,7 +27,7 @@ def getnames():
 # Get specific computer data
 @app.route('/api/computers/<computer_name>', methods=['GET'])
 def getdata(computer_name):
-    with open(f"data/{computer_name}.txt", "r") as file:
+    with open(f"data/{computer_name}", "r") as file:
         lines = file.readlines()  # קורא את כל השורות לרשימה
         rew_lines_list = [line.strip() for line in lines]  # מסיר רווחים מיותרים
     def decryption(data, code):

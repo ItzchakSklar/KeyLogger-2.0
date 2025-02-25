@@ -76,12 +76,12 @@ async function fetchComputerDetails(computerName) {
     try {
         const response = await fetch(`${API_URL}/computers/${computerName}`);
         const computer = await response.json();
-        
+
         if (response.ok) {
             renderComputerDetails(computer);
             currentComputerName = computerName;
         } else {
-            showError(computer.error || 'שגיאה בטעינת פרטי המחשב');
+            showError(computer.error || 'שגיאה בטעינת פרט11111י המחשב');
         }
     } catch (error) {
         showError('שגיאה בטעינת פרטי המחשב');
@@ -181,7 +181,6 @@ async function handleUpdateName(event) {
 // UI Rendering Functions
 function renderComputersList(computers) {
     computersContainer.innerHTML = '';
-    
     if (computers.length === 0) {
         computersContainer.innerHTML = '<p class="empty-state">לא נמצאו מחשבים</p>';
         return;
@@ -192,13 +191,12 @@ function renderComputersList(computers) {
         computerElement.className = 'computer-item';
         const maxLength = 30;
         computerElement.innerHTML = `
-            <div>
-                <span class="computer-name">${computer.name.length > maxLength ? computer.name.slice(0, maxLength) + "..." : computer.name}</span>
-            </div>
-            <!-- <span class="computer-data">${computer.data.length > maxLength ? computer.data.slice(0, maxLength) + "..." : computer.data}</span> -->
+        <div>
+        <span class="computer-name">${computer}</span>
+        </div>
         `;
         
-        computerElement.addEventListener('click', () => handleComputerClick(computer.name));
+        computerElement.addEventListener('click', () => handleComputerClick(computer));
         computersContainer.appendChild(computerElement);
     });
 }
