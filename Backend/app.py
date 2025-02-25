@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 from pathlib import Path
 import os
+import re
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
@@ -13,31 +14,56 @@ def file_writer(computer_name):
             file.write(text + "\n")
     path =  Path.cwd() /f"data/{computer_name}.txt"
     write_to_file(path,request.data.decode())
+    return jsonify({"message": "File updated successfully"}),200
 
 # Get all computers (names) [..,..,..]
 @app.route('/api/computers', methods=['GET'])
 def getnames():
     folder_path = "data"  # יש לשנות לנתיב הרצוי
     files = os.listdir(folder_path)  # מחזיר רשימה של כל הקבצים והתיקיות בתיקייה
-    return files
+    print(files)
+    return list(files)
 
 # Get specific computer data
 @app.route('/api/computers/<computer_name>', methods=['GET'])
 def getdata(computer_name):
-    with open(f"data/{computer_name}", "r") as file:
-        data = file.read()
+    with open(f"data/{computer_name}.txt", "r") as file:
+        lines = file.readlines()  # קורא את כל השורות לרשימה
+        rew_lines_list = [line.strip() for line in lines]  # מסיר רווחים מיותרים
     def decryption(data, code):
         decryption_string = ""
-        password_number = input("Enter password: ")
+        # password_number = input("Enter password: ")
+        password_number = code
         arr = list(data)
         for i in arr:
             char = ord(i)
             char = char ^ ord(password_number)
             decryption_char = chr(char)
             decryption_string += str(decryption_char)
-
         return decryption_string
-    return decryption(data,"Y")
+    lines_list_nise = list()
+    for line in rew_lines_list:
+         lines_list_nise.append(decryption(line,"Y"))
+    def string_to_dikt(list1):
+        # מחליף מרכאות כפולות במרכאות יחידות כדי להקל על ה-parsing
+        list1 = list1.replace('"', "'")
+
+        # מחפש את כל הזוגות של timestamp ותוכן
+        pattern = r"'([^']+)': '([^']*)'"
+        matches = re.findall(pattern, list1)
+
+        # יוצר מילון מהתוצאות
+        result_dict = {timestamp: content for timestamp, content in matches}
+        return result_dict
+
+    for i in range(len(lines_list_nise)):
+        lines_list_nise[i] = string_to_dikt(lines_list_nise[i])
+    one_big_dict = dict()
+    for dicts in lines_list_nise:
+        for key, value in dicts.items():
+            one_big_dict[key] = value
+    return one_big_dict
+
 
 if __name__ == '__main__':
     app.run(debug=True)

