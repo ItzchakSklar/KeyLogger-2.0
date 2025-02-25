@@ -210,24 +210,30 @@ function renderComputerDetails(computer, computerName) {
     detailName.textContent = computerName;
 
     tableBody.innerHTML = '';
-    const row = document.createElement('tr')
-    const minutCell = document.createElement('th');
-    const dataCell = document.createElement('th');
-    minutCell.textContent = `minut`
-    dataCell.textContent = `text`
-    row.appendChild(minutCell);
-    row.appendChild(dataCell);
-    tableBody.appendChild(row);
-
-    for (let key in computer) {
+    console.log(computer);
+    
+    if (Object.keys(computer).length > 0) {
         const row = document.createElement('tr')
-        const minutCell = document.createElement('td');
-        const dataCell = document.createElement('td');
-        minutCell.textContent = key + `:`;
-        dataCell.textContent = computer[key];
+        const minutCell = document.createElement('th');
+        const dataCell = document.createElement('th');
+        minutCell.textContent = `minut`
+        dataCell.textContent = `text`
         row.appendChild(minutCell);
         row.appendChild(dataCell);
         tableBody.appendChild(row);
+
+        for (let key in computer) {
+            const row = document.createElement('tr')
+            const minutCell = document.createElement('td');
+            const dataCell = document.createElement('td');
+            minutCell.textContent = key + `:`;
+            dataCell.textContent = computer[key];
+            row.appendChild(minutCell);
+            row.appendChild(dataCell);
+            tableBody.appendChild(row);
+        }
+    } else {
+        tableBody.innerHTML = `אין תוכן בקובץ`
     }
 }
 
