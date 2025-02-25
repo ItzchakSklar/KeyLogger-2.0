@@ -213,9 +213,9 @@ function renderComputerDetails(computer, computerName) {
     for (let key in computer) {
         const row = document.createElement('tr');
         const minutCell = document.createElement('td');
-        minutCell.textContent = key;
+        minutCell.textContent = key + `:`;
         const dataCell = document.createElement('td');
-        dataCell.textContent = computer[key];        
+        dataCell.textContent = computer[key];
         row.appendChild(minutCell);
         row.appendChild(dataCell);
         tableBody.appendChild(row);
