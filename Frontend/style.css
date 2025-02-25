@@ -39,7 +39,6 @@ html, body {
 /* Container */
 .container {
     max-width: 2000px;
-    width: 80vh;
     margin: 0 auto;
     padding: 2rem;
 }
@@ -212,7 +211,7 @@ main {
     font-weight: 500;
 }
 
-.computer-id {
+.computer-data {
     color: var(--text-secondary);
     font-size: 0.9rem;
 }
@@ -220,6 +219,7 @@ main {
 /* computer Details */
 .computer-info {
     margin-bottom: 2rem;
+    
 }
 
 .info-row {
@@ -232,10 +232,19 @@ main {
     font-weight: 500;
     min-width: 100px;
     color: var(--text-secondary);
+    margin-bottom: auto;
 }
 
 .info-row .value {
     flex: 1;
+}
+
+td:first-of-type {
+    padding-right: 10px;
+}
+
+td {
+    vertical-align: top;
 }
 
 /* Grades Section */

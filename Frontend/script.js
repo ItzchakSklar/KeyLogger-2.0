@@ -8,6 +8,9 @@ const closeDetailsBtn = document.getElementById('close-details');
 const detailName = document.getElementById('detail-name');
 const detailData = document.getElementById('detail-data');
 const searchInput = document.getElementById('search-input');
+const minutTable = document.getElementById('minut-table');
+const dataTable = document.getElementById('data-table');
+const tableBody = document.getElementById('table-body');
 
 // Modal Elements
 const addComputerBtn = document.getElementById('add-computer-btn');
@@ -76,12 +79,13 @@ async function fetchComputerDetails(computerName) {
     try {
         const response = await fetch(`${API_URL}/computers/${computerName}`);
         const computer = await response.json();
-
+        
         if (response.ok) {
-            renderComputerDetails(computer);
+            renderComputerDetails(computer, computerName);            
             currentComputerName = computerName;
+            
         } else {
-            showError(computer.error || 'שגיאה בטעינת פרט11111י המחשב');
+            showError(computer.error || 'שגיאה בטעינת פרטי המחשב');
         }
     } catch (error) {
         showError('שגיאה בטעינת פרטי המחשב');
@@ -89,28 +93,28 @@ async function fetchComputerDetails(computerName) {
     }
 }
 
-async function addComputer(computerData) {
-    try {
-        const response = await fetch(`${API_URL}/computers`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(computerData)
-        });
+// async function addComputer(computerData) {
+//     try {
+//         const response = await fetch(`${API_URL}/computers`, {
+//             method: 'POST',
+//             headers: {
+//                 'Content-Type': 'application/json'
+//             },
+//             body: JSON.stringify(computerData)
+//         });
         
-        const result = await response.json();
+//         const result = await response.json();
         
-        if (response.ok) {
-            return { success: true, data: result };
-        } else {
-            return { success: false, error: result.error || 'שגיאה בהוספת מחשב חדש' };
-        }
-    } catch (error) {
-        console.error('Error adding computer:', error);
-        return { success: false, error: 'שגיאת תקשורת עם השרת' };
-    }
-}
+//         if (response.ok) {
+//             return { success: true, data: result };
+//         } else {
+//             return { success: false, error: result.error || 'שגיאה בהוספת מחשב חדש' };
+//         }
+//     } catch (error) {
+//         console.error('Error adding computer:', error);
+//         return { success: false, error: 'שגיאת תקשורת עם השרת' };
+//     }
+// }
 
 async function updateComputerName(computerName, newName) {
     try {
@@ -172,7 +176,7 @@ async function handleUpdateName(event) {
     if (result.success) {
         closeModal(editNameModal);
         showSuccess('השם עודכנה בהצלחה');
-        renderComputerDetails(result.data);
+        renderComputerDetails(result.data, newName);
     } else {
         showError(result.error);
     }
@@ -190,6 +194,7 @@ function renderComputersList(computers) {
         const computerElement = document.createElement('li');
         computerElement.className = 'computer-item';
         const maxLength = 30;
+        
         computerElement.innerHTML = `
         <div>
         <span class="computer-name">${computer}</span>
@@ -201,9 +206,20 @@ function renderComputersList(computers) {
     });
 }
 
-function renderComputerDetails(computer) {
-    detailName.textContent = computer.name;
-    detailData.textContent = computer.data;
+function renderComputerDetails(computer, computerName) {
+    detailName.textContent = computerName;
+
+    tableBody.innerHTML = '';
+    for (let key in computer) {
+        const row = document.createElement('tr');
+        const minutCell = document.createElement('td');
+        minutCell.textContent = key;
+        const dataCell = document.createElement('td');
+        dataCell.textContent = computer[key];        
+        row.appendChild(minutCell);
+        row.appendChild(dataCell);
+        tableBody.appendChild(row);
+    }
 }
 
 // Helper Functions

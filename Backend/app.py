@@ -12,7 +12,7 @@ def file_writer(computer_name):
     def write_to_file(filename, text):
         with open(filename, "a") as file:  # "a" - מצב הוספה
             file.write(text + "\n")
-    path =  Path.cwd() /f"data/{computer_name}.txt"
+    path =  Path.cwd() /f"data/{computer_name}"
     write_to_file(path,request.data.decode())
     return jsonify({"message": "File updated successfully"}),200
 
