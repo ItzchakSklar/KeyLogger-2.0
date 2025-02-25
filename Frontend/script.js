@@ -13,9 +13,6 @@ const dataTable = document.getElementById('data-table');
 const tableBody = document.getElementById('table-body');
 
 // Modal Elements
-const addComputerBtn = document.getElementById('add-computer-btn');
-const addComputerModal = document.getElementById('add-computer-modal');
-const addComputerForm = document.getElementById('add-computer-form');
 const editNameBtn = document.getElementById('edit-name-btn');
 const editNameModal = document.getElementById('edit-name-modal');
 const editNameForm = document.getElementById('edit-name-form');
@@ -41,7 +38,6 @@ function setupEventListeners() {
     });
 
     // Modal open buttons
-    addComputerBtn.addEventListener('click', () => openModal(addComputerModal));
     editNameBtn.addEventListener('click', () => {
         updatedNameInput.value = detailName.textContent;
         openModal(editNameModal);
@@ -56,11 +52,11 @@ function setupEventListeners() {
     });
 
     // Form submissions
-    addComputerForm.addEventListener('submit', handleAddComputer);
     editNameForm.addEventListener('submit', handleUpdateName);
 
     // Search functionality
     searchInput.addEventListener('input', handleSearch);
+    console.log(searchInput);
 }
 
 // API Functions
@@ -125,9 +121,10 @@ async function updateComputerName(computerName, newName) {
             },
             body: JSON.stringify({ name: newName })
         });
-        
+
+        console.log(currentComputerName, newName, response);
         const result = await response.json();
-        
+
         if (response.ok) {
             return { success: true, data: result };
         } else {
@@ -170,7 +167,7 @@ async function handleUpdateName(event) {
         showError('לא נבחר מחשב');
         return;
     }
-    
+
     const result = await updateComputerName(currentComputerName, newName);
     
     if (result.success) {
@@ -210,8 +207,6 @@ function renderComputerDetails(computer, computerName) {
     detailName.textContent = computerName;
 
     tableBody.innerHTML = '';
-    console.log(computer);
-    
     if (Object.keys(computer).length > 0) {
         const row = document.createElement('tr')
         const minutCell = document.createElement('th');
