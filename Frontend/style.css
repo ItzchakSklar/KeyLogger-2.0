@@ -111,8 +111,12 @@ main {
 
 .card:first-of-type {
     margin: 0 auto auto;
-    max-width: 400px;
-    min-width: 320px;
+    max-width: 500px;
+    min-width: 330px;
+}
+
+.card:last-of-type {
+    width: 100%;
 }
 
 /* table */
@@ -121,9 +125,17 @@ td:first-of-type {
     width: 152px;
 }
 
+td:last-of-type {
+    width: 80%;
+}
+
 td {
     border-bottom: 1px solid var(--divider-color);
     vertical-align: top;
+}
+
+th {
+    width: 152px;
 }
 
 /* Button Styles */
