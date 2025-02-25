@@ -1,8 +1,8 @@
 from abc import ABC,abstractmethod
 from datetime import datetime
 from pathlib import Path
+from _socket import gethostname
 from requests import post
-from socket import gethostname
 
 class IWriter(ABC):
     """Abstract class for Interface Writer with write method"""

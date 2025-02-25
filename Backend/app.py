@@ -1,71 +1,69 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
+from pathlib import Path
+import os
+import re
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
 
-# Initial computers data
-computers = [
-    {
-        "name": "computer 1 ljdfs lbjdf ls lsd sdl",
-        "data": "ds hks ksd ksd 1 djfsk jfidslfb jdls fhjfgkld fkdl gfdjlg fsdjg jd gkjdfs gjk fdj gfdkhgb jkfd gjdfk gj fdkg ghdf gkfdjg "
-    },
-    {
-        "name": "computer 2",
-        "data": "אני איראני 2"
-    },
-    {
-        "name": "computer 3",
-        "data": "אני איראני 3"
-    }
-]
+@app.route('/api/computers/<computer_name>', methods=['POST'])
+def file_writer(computer_name):
+    def write_to_file(filename, text):
+        with open(filename, "a") as file:  # "a" - מצב הוספה
+            file.write(text + "\n")
+    path =  Path.cwd() /f"data/{computer_name}.txt"
+    write_to_file(path,request.data.decode())
+    return jsonify({"message": "File updated successfully"}),200
 
-
-# Get all computers (name and data only)
+# Get all computers (names) [..,..,..]
 @app.route('/api/computers', methods=['GET'])
-def get_computers():
-    simplified_computers = [{"name": computer["name"], "data": computer["data"]} for computer in computers]
-    return jsonify(simplified_computers)
+def getnames():
+    folder_path = "data"  # יש לשנות לנתיב הרצוי
+    files = os.listdir(folder_path)  # מחזיר רשימה של כל הקבצים והתיקיות בתיקייה
+    print(files)
+    return list(files)
 
-
-# Get specific computer details
+# Get specific computer data
 @app.route('/api/computers/<computer_name>', methods=['GET'])
-def get_computer(computer_name):
-    computer = next((s for s in computers if s["name"] == computer_name), None)
-    if computer:
-        return jsonify(computer)
-    else:
-        return jsonify({"error": "מחשב לא נמצא"}), 404
+def getdata(computer_name):
+    with open(f"data/{computer_name}.txt", "r") as file:
+        lines = file.readlines()  # קורא את כל השורות לרשימה
+        rew_lines_list = [line.strip() for line in lines]  # מסיר רווחים מיותרים
+    def decryption(data, code):
+        decryption_string = ""
+        # password_number = input("Enter password: ")
+        password_number = code
+        arr = list(data)
+        for i in arr:
+            char = ord(i)
+            char = char ^ ord(password_number)
+            decryption_char = chr(char)
+            decryption_string += str(decryption_char)
+        return decryption_string
+    lines_list_nise = list()
+    for line in rew_lines_list:
+         lines_list_nise.append(decryption(line,"Y"))
+    def string_to_dikt(list1):
+        # מחליף מרכאות כפולות במרכאות יחידות כדי להקל על ה-parsing
+        list1 = list1.replace('"', "'")
 
+        # מחפש את כל הזוגות של timestamp ותוכן
+        pattern = r"'([^']+)': '([^']*)'"
+        matches = re.findall(pattern, list1)
 
-# Add new computer
-@app.route('/api/computers', methods=['POST'])
-def add_computer():
-    new_computer = request.json
+        # יוצר מילון מהתוצאות
+        result_dict = {timestamp: content for timestamp, content in matches}
+        return result_dict
 
-    # Check if computer with this name already exists
-    if any(s["name"] == new_computer["name"] for s in computers):
-        return jsonify({"error": "מחשב עם שם זה כבר קיים במערכת"}), 400
+    for i in range(len(lines_list_nise)):
+        lines_list_nise[i] = string_to_dikt(lines_list_nise[i])
+    one_big_dict = dict()
+    for dicts in lines_list_nise:
+        for key, value in dicts.items():
+            one_big_dict[key] = value
+    return one_big_dict
 
-    # Add new computer
-    computers.append(new_computer)
-    return jsonify(new_computer), 201
-
-
-# Update computer details
-@app.route('/api/computers/<computer_name>', methods=['PUT'])
-def update_computer(computer_name):
-    update_data = request.json
-    computer = next((s for s in computers if s["name"] == computer_name), None)
-
-    if not computer:
-        return jsonify({"error": "מחשב לא נמצא"}), 404
-
-    # Update computer fields
-    if "name" in update_data:
-        computer["name"] = update_data["name"]
-
-    return jsonify(computer)
 
 if __name__ == '__main__':
     app.run(debug=True)
