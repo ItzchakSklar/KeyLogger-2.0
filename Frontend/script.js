@@ -76,7 +76,6 @@ async function fetchComputerDetails(computerName) {
     try {
         const response = await fetch(`${API_URL}/computers/${computerName}`);
         const computer = await response.json();
-        
         if (response.ok) {
             renderComputerDetails(computer);
             currentComputerName = computerName;
@@ -193,12 +192,12 @@ function renderComputersList(computers) {
         const maxLength = 30;
         computerElement.innerHTML = `
             <div>
-                <span class="computer-name">${computer.name.length > maxLength ? computer.name.slice(0, maxLength) + "..." : computer.name}</span>
+                <span class="computer-name">${computer}</span>
             </div>
-            <!-- <span class="computer-data">${computer.data.length > maxLength ? computer.data.slice(0, maxLength) + "..." : computer.data}</span> -->
+            <!-- <span class="computer-data">${computer + "..."}</span> -->
         `;
         
-        computerElement.addEventListener('click', () => handleComputerClick(computer.name));
+        computerElement.addEventListener('click', () => handleComputerClick(computer));
         computersContainer.appendChild(computerElement);
     });
 }

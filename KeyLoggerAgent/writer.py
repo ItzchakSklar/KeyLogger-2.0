@@ -27,7 +27,7 @@ class DictWriter(IWriter):
     @staticmethod
     def _cur_min():
         """Return the current minute as a string"""
-        return datetime.now().strftime("%d/%m/%Y, %H:%M")
+        return datetime.now().strftime("%d-%m-%Y|%H:%M")
 
     def write(self, data: list) -> None:
         """Write the given list of characters to the dictionary."""

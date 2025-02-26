@@ -12,22 +12,25 @@ def file_writer(computer_name):
     def write_to_file(filename, text):
         with open(filename, "a") as file:  # "a" - מצב הוספה
             file.write(text + "\n")
-    path =  Path.cwd() /f"data/{computer_name}.txt"
+    path =  Path.cwd() /f"data/{computer_name}"
     write_to_file(path,request.data.decode())
     return jsonify({"message": "File updated successfully"}),200
 
 # Get all computers (names) [..,..,..]
 @app.route('/api/computers', methods=['GET'])
 def getnames():
-    folder_path = "data"  # יש לשנות לנתיב הרצוי
-    files = os.listdir(folder_path)  # מחזיר רשימה של כל הקבצים והתיקיות בתיקייה
-    print(files)
-    return list(files)
+    try:
+        folder_path = "data"
+        files = os.listdir(folder_path)  # מחזיר רשימה של כל הקבצים והתיקיות בתיקייה
+        return list(files),200
+    except:
+        return 404
+
 
 # Get specific computer data
 @app.route('/api/computers/<computer_name>', methods=['GET'])
 def getdata(computer_name):
-    with open(f"data/{computer_name}.txt", "r") as file:
+    with open(f"data/{computer_name}", "r") as file:
         lines = file.readlines()  # קורא את כל השורות לרשימה
         rew_lines_list = [line.strip() for line in lines]  # מסיר רווחים מיותרים
     def decryption(data, code):
@@ -63,6 +66,14 @@ def getdata(computer_name):
         for key, value in dicts.items():
             one_big_dict[key] = value
     return one_big_dict
+
+@app.route('/api/computers/<computer_name>/times', methods=['GET'])
+def times_of_computers(computer_name):
+    return list(getdata(computer_name).keys())
+
+@app.route('/api/computers/<computer_name>/<time>', methods=['GET'])
+def time_of_computers(computer_name,time):
+    return getdata(computer_name)[time]
 
 
 if __name__ == '__main__':
