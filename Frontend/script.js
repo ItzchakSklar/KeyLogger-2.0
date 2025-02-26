@@ -99,8 +99,7 @@ async function updateComputerName(computerName, newName) {
             },
             body: JSON.stringify({ name: newName })
         });
-        console.log(currentComputerName, newName, response);
-        
+
         const result = await response.json();
 
         if (response.ok) {
