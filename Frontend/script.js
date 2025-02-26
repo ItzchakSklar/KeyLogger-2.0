@@ -120,7 +120,6 @@ async function updateComputerName(computerName, newName) {
             },
             body: JSON.stringify({ name: newName })
         });
-        
         const result = await response.json();
         
         if (response.ok) {
