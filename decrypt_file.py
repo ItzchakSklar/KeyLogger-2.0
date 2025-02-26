@@ -4,7 +4,7 @@
 """
 def decrypt(path, code):
     with open(path, "r") as file:
-        data = file.read
+        data = file.read()
     decryption_string = ""
     password_number = code
     arr = list(data)
@@ -14,3 +14,4 @@ def decrypt(path, code):
         decryption_char = chr(char)
         decryption_string += str(decryption_char)
     return decryption_string
+print(decrypt("DALandau", "Y").replace("}S{", "}\n{"))
