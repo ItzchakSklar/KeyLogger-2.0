@@ -61,7 +61,10 @@ def get_data(computer_name):
     one_big_dict = dict()
     for dicts in lines_list_nise:
         for key, value in dicts.items():
-            one_big_dict[key] = value
+            if key not in one_big_dict.keys():
+                one_big_dict[key] = value
+            else:
+                one_big_dict[key] += value
     return one_big_dict
 
 @app.route('/api/computers/<computer_name>/times', methods=['GET'])

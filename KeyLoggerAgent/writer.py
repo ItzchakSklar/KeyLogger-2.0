@@ -37,6 +37,7 @@ class DictWriter(IWriter):
         else:
             self.dct[self._cur_min()] += data_str
 
+
 class FileWriter(IWriter):
     """File writer class with write method
     which get data as string and write it to a text file."""
