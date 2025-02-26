@@ -19,10 +19,12 @@ def file_writer(computer_name):
 # Get all computers (names) [..,..,..]
 @app.route('/api/computers', methods=['GET'])
 def get_names():
-    folder_path = "data"  # יש לשנות לנתיב הרצוי
-    files = os.listdir(folder_path)  # מחזיר רשימה של כל הקבצים והתיקיות בתיקייה
-    return list(files)
-
+    try:
+        folder_path = "data"
+        files = os.listdir(folder_path)  # מחזיר רשימה של כל הקבצים והתיקיות בתיקייה
+        return list(files),200
+    except:
+        return 404
 # Get specific computer data
 @app.route('/api/computers/<computer_name>', methods=['GET'])
 def get_data(computer_name):
@@ -61,6 +63,14 @@ def get_data(computer_name):
         for key, value in dicts.items():
             one_big_dict[key] = value
     return one_big_dict
+
+@app.route('/api/computers/<computer_name>/times', methods=['GET'])
+def times_of_computers(computer_name):
+    return list(get_data(computer_name).keys())
+
+@app.route('/api/computers/<computer_name>/<time>', methods=['GET'])
+def time_of_computers(computer_name,time):
+    return get_data(computer_name)[time]
 
 if __name__ == '__main__':
     app.run(debug=True)
