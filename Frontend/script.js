@@ -56,7 +56,6 @@ function setupEventListeners() {
 
     // Search functionality
     searchInput.addEventListener('input', handleSearch);
-    console.log(searchInput);
 }
 
 // API Functions
@@ -99,7 +98,7 @@ async function updateComputerName(computerName, newName) {
             },
             body: JSON.stringify({ name: newName })
         });
-        console.log(currentComputerName, newName, response);
+        // console.log(currentComputerName, newName, response);
         
         const result = await response.json();
 
@@ -121,20 +120,27 @@ function handleComputerClick(computerName) {
 }
 
 function handleSearch(event) {
+    const computerItems = document.querySelectorAll('.computer-item');
     const searchTerm = event.target.value.toLowerCase();
-    const computerItems = computersContainer.querySelectorAll('.computer-item');
     
     computerItems.forEach(item => {
-        const name = item.querySelector('.computer-name').textContent.toLowerCase();
-        const data = item.querySelector('.computer-data').textContent;
+        const nameElement = item.querySelector('.computer-name');
+        const dataElement = item.querySelector('.computer-data');
+        const name = nameElement ? nameElement.textContent.toLowerCase() : "";
+        const data = dataElement ? dataElement.textContent.toLowerCase() : "";
         
-        if (name.includes(searchTerm) || data.includes(searchTerm)) {
-            item.style.display = '';
-        } else {
-            item.style.display = 'none';
-        }
-    });
+        item.style.display = (name.includes(searchTerm) || data.includes(searchTerm)) ? '' : 'none';
+    });    
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    const searchInput = document.getElementById('search-input');
+    if (searchInput) {
+        searchInput.addEventListener('input', handleSearch);
+    } else {
+        showError('שדה החיפוש לא נמצא');
+    }
+});
 
 async function handleUpdateName(event) {
     event.preventDefault();
