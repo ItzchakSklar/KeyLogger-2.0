@@ -127,9 +127,10 @@ th {
 }
 
 td {
-    border-top: 1px solid var(--divider-color2);
-    border-bottom: 1px solid var(--divider-color2);
+    /* border-top: 1px solid var(--divider-color2);
+    border-bottom: 1px solid var(--divider-color2); */
     vertical-align: top;
+    padding: 8px;
 }
 
 td:first-of-type {
@@ -191,6 +192,8 @@ tr:last-child > td {
 .btn.small {
     padding: 0.25rem 0.5rem;
     font-size: 0.875rem;
+    /* הסתרת כפתור עריכה */
+    display: none;
 }
 
 /* Search Container */
@@ -283,55 +286,6 @@ tr:last-child > td {
 .info-row .value {
     flex: 1;
 }
-
-/* Grades Section */
-/* .grades-section h3 {
-    font-size: 1.25rem;
-    color: var(--text-primary);
-    margin-bottom: 1rem;
-}
-
-.grades-container {
-    margin-bottom: 1.5rem;
-}
-
-#grades-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-    margin-bottom: 1rem;
-}
-
-.grade-pill {
-    display: inline-block;
-    padding: 0.5rem 0.75rem;
-    background-color: var(--primary-light);
-    color: var(--primary-dark);
-    border-radius: 100px;
-    font-weight: 500;
-    font-size: 0.9rem;
-}
-
-.grades-summary {
-    margin-top: 1rem;
-    padding-top: 1rem;
-    border-top: 1px dashed var(--divider-color);
-}
-
-.grade-average {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-weight: 500;
-}
-
-#grade-average-value {
-    display: inline-block;
-    padding: 0.25rem 0.5rem;
-    background-color: var(--primary-color);
-    color: white;
-    border-radius: var(--border-radius);
-} */
 
 /* Modal Styles */
 .modal-overlay {
@@ -464,13 +418,22 @@ input:invalid {
     .modal-content {
         width: 90%;
     }
+
     .label {
         display: none;
     }
+    
     .card:first-of-type {
         margin: 0 auto auto;
         width: 100%;
         min-width: 152px;
         max-width: 100%;
-    }    
+    }
+
+    /* td:last-of-type {
+        min-width: auto;
+    }
+    tr::content {
+        background-color: #f44336;
+    } */
 }
