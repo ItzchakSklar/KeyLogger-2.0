@@ -8,11 +8,11 @@ const closeDetailsBtn = document.getElementById('close-details');
 const detailName = document.getElementById('detail-name');
 const detailData = document.getElementById('detail-data');
 const searchInput = document.getElementById('search-input');
-const minutTable = document.getElementById('minut-table');
-const dataTable = document.getElementById('data-table');
-const tableBody = document.getElementById('table-body');
 
 // Modal Elements
+const addComputerBtn = document.getElementById('add-computer-btn');
+const addComputerModal = document.getElementById('add-computer-modal');
+const addComputerForm = document.getElementById('add-computer-form');
 const editNameBtn = document.getElementById('edit-name-btn');
 const editNameModal = document.getElementById('edit-name-modal');
 const editNameForm = document.getElementById('edit-name-form');
@@ -38,6 +38,7 @@ function setupEventListeners() {
     });
 
     // Modal open buttons
+    addComputerBtn.addEventListener('click', () => openModal(addComputerModal));
     editNameBtn.addEventListener('click', () => {
         updatedNameInput.value = detailName.textContent;
         openModal(editNameModal);
@@ -52,11 +53,11 @@ function setupEventListeners() {
     });
 
     // Form submissions
+    addComputerForm.addEventListener('submit', handleAddComputer);
     editNameForm.addEventListener('submit', handleUpdateName);
 
     // Search functionality
     searchInput.addEventListener('input', handleSearch);
-    console.log(searchInput);
 }
 
 // API Functions
@@ -65,7 +66,6 @@ async function fetchComputers() {
         const response = await fetch(`${API_URL}/computers`);
         const computers = await response.json();
         renderComputersList(computers);
-
     } catch (error) {
         showError('שגיאה בטעינת רשימת המחשבים');
         console.error('Error fetching computers:', error);
@@ -76,17 +76,38 @@ async function fetchComputerDetails(computerName) {
     try {
         const response = await fetch(`${API_URL}/computers/${computerName}`);
         const computer = await response.json();
-        
         if (response.ok) {
-            renderComputerDetails(computer, computerName);            
+            renderComputerDetails(computer);
             currentComputerName = computerName;
-            
         } else {
             showError(computer.error || 'שגיאה בטעינת פרטי המחשב');
         }
     } catch (error) {
         showError('שגיאה בטעינת פרטי המחשב');
         console.error('Error fetching computer details:', error);
+    }
+}
+
+async function addComputer(computerData) {
+    try {
+        const response = await fetch(`${API_URL}/computers`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(computerData)
+        });
+        
+        const result = await response.json();
+        
+        if (response.ok) {
+            return { success: true, data: result };
+        } else {
+            return { success: false, error: result.error || 'שגיאה בהוספת מחשב חדש' };
+        }
+    } catch (error) {
+        console.error('Error adding computer:', error);
+        return { success: false, error: 'שגיאת תקשורת עם השרת' };
     }
 }
 
@@ -99,9 +120,8 @@ async function updateComputerName(computerName, newName) {
             },
             body: JSON.stringify({ name: newName })
         });
-
         const result = await response.json();
-
+        
         if (response.ok) {
             return { success: true, data: result };
         } else {
@@ -144,13 +164,13 @@ async function handleUpdateName(event) {
         showError('לא נבחר מחשב');
         return;
     }
-
+    
     const result = await updateComputerName(currentComputerName, newName);
     
     if (result.success) {
         closeModal(editNameModal);
         showSuccess('השם עודכנה בהצלחה');
-        renderComputerDetails(result.data, newName);
+        renderComputerDetails(result.data);
     } else {
         showError(result.error);
     }
@@ -159,6 +179,7 @@ async function handleUpdateName(event) {
 // UI Rendering Functions
 function renderComputersList(computers) {
     computersContainer.innerHTML = '';
+    
     if (computers.length === 0) {
         computersContainer.innerHTML = '<p class="empty-state">לא נמצאו מחשבים</p>';
         return;
@@ -168,12 +189,11 @@ function renderComputersList(computers) {
         const computerElement = document.createElement('li');
         computerElement.className = 'computer-item';
         const maxLength = 30;
-        
         computerElement.innerHTML = `
-        <div>
-        <span class="computer-name">${computer}</span>
-        </div>
-        <!-- <span class="student-mac">${computer}</span> -->
+            <div>
+                <span class="computer-name">${computer}</span>
+            </div>
+            <!-- <span class="computer-data">${computer + "..."}</span> -->
         `;
         
         computerElement.addEventListener('click', () => handleComputerClick(computer));
@@ -181,33 +201,9 @@ function renderComputersList(computers) {
     });
 }
 
-function renderComputerDetails(computer, computerName) {
-    detailName.textContent = computerName;
-
-    tableBody.innerHTML = '';
-    if (Object.keys(computer).length > 0) {
-        const row = document.createElement('tr')
-        const minutCell = document.createElement('th');
-        const dataCell = document.createElement('th');
-        minutCell.textContent = `minut`
-        dataCell.textContent = `text`
-        row.appendChild(minutCell);
-        row.appendChild(dataCell);
-        tableBody.appendChild(row);
-
-        for (let key in computer) {
-            const row = document.createElement('tr')
-            const minutCell = document.createElement('td');
-            const dataCell = document.createElement('td');
-            minutCell.textContent = key + `:`;
-            dataCell.textContent = computer[key];
-            row.appendChild(minutCell);
-            row.appendChild(dataCell);
-            tableBody.appendChild(row);
-        }
-    } else {
-        tableBody.innerHTML = `אין תוכן בקובץ`
-    }
+function renderComputerDetails(computer) {
+    detailName.textContent = computer.name;
+    detailData.textContent = computer.data;
 }
 
 // Helper Functions
