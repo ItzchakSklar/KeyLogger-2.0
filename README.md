@@ -226,7 +226,15 @@ function showNotification(message, type) {
 - The frontend uses JavaScript to dynamically update the UI.
 - The project can be extended with a proper UI framework for better design.
 
+##Authors
 
+Itzchak Sklar - Developer (GitHub https://github.com/ItzchakSklar)
+
+david avishay landau - Developer (GitHub https://github.com/davidlandau770)
+
+shemaryahuz - Developer (GitHub https://github.com/shemaryahuz)
+
+If you contributed to this project, feel free to add yourself to the list!
 
 ## Contributing
 Contributions are welcome! Please open an issue or submit a pull request for any improvements or bug fixes.
