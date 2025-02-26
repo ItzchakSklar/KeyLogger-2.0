@@ -225,8 +225,9 @@ function showNotification(message, type) {
 - Ensure the Flask server is running before interacting with the frontend.
 - The frontend uses JavaScript to dynamically update the UI.
 - The project can be extended with a proper UI framework for better design.
+```
 
-##Authors
+## Authors
 
 Itzchak Sklar - Developer (GitHub https://github.com/ItzchakSklar)
 
