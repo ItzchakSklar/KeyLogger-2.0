@@ -18,21 +18,19 @@ def file_writer(computer_name):
 
 # Get all computers (names) [..,..,..]
 @app.route('/api/computers', methods=['GET'])
-def getnames():
+def get_names():
     folder_path = "data"  # יש לשנות לנתיב הרצוי
     files = os.listdir(folder_path)  # מחזיר רשימה של כל הקבצים והתיקיות בתיקייה
-    print(files)
     return list(files)
 
 # Get specific computer data
 @app.route('/api/computers/<computer_name>', methods=['GET'])
-def getdata(computer_name):
+def get_data(computer_name):
     with open(f"data/{computer_name}", "r") as file:
         lines = file.readlines()  # קורא את כל השורות לרשימה
         rew_lines_list = [line.strip() for line in lines]  # מסיר רווחים מיותרים
     def decryption(data, code):
         decryption_string = ""
-        # password_number = input("Enter password: ")
         password_number = code
         arr = list(data)
         for i in arr:
@@ -44,7 +42,7 @@ def getdata(computer_name):
     lines_list_nise = list()
     for line in rew_lines_list:
          lines_list_nise.append(decryption(line,"Y"))
-    def string_to_dikt(list1):
+    def string_to_dict(list1):
         # מחליף מרכאות כפולות במרכאות יחידות כדי להקל על ה-parsing
         list1 = list1.replace('"', "'")
 
@@ -57,13 +55,12 @@ def getdata(computer_name):
         return result_dict
 
     for i in range(len(lines_list_nise)):
-        lines_list_nise[i] = string_to_dikt(lines_list_nise[i])
+        lines_list_nise[i] = string_to_dict(lines_list_nise[i])
     one_big_dict = dict()
     for dicts in lines_list_nise:
         for key, value in dicts.items():
             one_big_dict[key] = value
     return one_big_dict
-
 
 if __name__ == '__main__':
     app.run(debug=True)

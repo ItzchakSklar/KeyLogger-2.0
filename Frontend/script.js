@@ -65,6 +65,7 @@ async function fetchComputers() {
         const response = await fetch(`${API_URL}/computers`);
         const computers = await response.json();
         renderComputersList(computers);
+
     } catch (error) {
         showError('שגיאה בטעינת רשימת המחשבים');
         console.error('Error fetching computers:', error);
@@ -89,29 +90,6 @@ async function fetchComputerDetails(computerName) {
     }
 }
 
-// async function addComputer(computerData) {
-//     try {
-//         const response = await fetch(`${API_URL}/computers`, {
-//             method: 'POST',
-//             headers: {
-//                 'Content-Type': 'application/json'
-//             },
-//             body: JSON.stringify(computerData)
-//         });
-        
-//         const result = await response.json();
-        
-//         if (response.ok) {
-//             return { success: true, data: result };
-//         } else {
-//             return { success: false, error: result.error || 'שגיאה בהוספת מחשב חדש' };
-//         }
-//     } catch (error) {
-//         console.error('Error adding computer:', error);
-//         return { success: false, error: 'שגיאת תקשורת עם השרת' };
-//     }
-// }
-
 async function updateComputerName(computerName, newName) {
     try {
         const response = await fetch(`${API_URL}/computers/${computerName}`, {
@@ -121,8 +99,8 @@ async function updateComputerName(computerName, newName) {
             },
             body: JSON.stringify({ name: newName })
         });
-
         console.log(currentComputerName, newName, response);
+        
         const result = await response.json();
 
         if (response.ok) {
@@ -196,6 +174,7 @@ function renderComputersList(computers) {
         <div>
         <span class="computer-name">${computer}</span>
         </div>
+        <!-- <span class="student-mac">${computer}</span> -->
         `;
         
         computerElement.addEventListener('click', () => handleComputerClick(computer));
