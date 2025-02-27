@@ -58,6 +58,13 @@ header h1 {
     margin-bottom: 1.5rem;
 }
 
+header p {
+    color: var(--background);
+    font-size: 0.8em;
+    text-align: right;
+    line-height: 0;
+}
+
 .actions {
     display: flex;
     justify-content: space-between;
@@ -395,6 +402,14 @@ input:invalid {
 /* Utility Classes */
 .hidden {
     display: none !important;
+
+}
+
+/* End */
+.container > p {
+    margin: 5% 0;
+    text-align: center;
+    font-weight: 500;
 }
 
 /* Responsive Adjustments */
@@ -402,6 +417,7 @@ input:invalid {
     main {
         display: grid;
     }
+
     .container {
         padding: 1rem;
     }
